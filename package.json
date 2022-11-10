@@ -1,0 +1,33 @@
+{
+  "name": "pets-house-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "server": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VasylArtymovych/pets-house-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VasylArtymovych/pets-house-server/issues"
+  },
+  "homepage": "https://github.com/VasylArtymovych/pets-house-server#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "joi": "^17.7.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20"
+  }
+}
