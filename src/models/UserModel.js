@@ -1,19 +1,33 @@
 const { model, Schema } = require('mongoose');
 
-const SchemaUser = Schema(
+// const phoneRegexp=
+
+const userSchema = new Schema(
   {
-    userName: {
+    name: {
       type: String,
-      default: 'John Doe'
+      default: ''
     },
-    userEmail: {
+    email: {
       type: String,
-      required: [true, 'DB: Email is required.']
+      required: [true, 'DB: Email is required.'],
     },
-    userPassword: {
+    password: {
       type: String,
-      required: [true, 'DB: Password is required.']
+      required: [true, 'DB: Password is required.'],
     },
+    city: {
+      type: String,
+      required: [true, 'DB: City is required.'],      
+    },
+    phone: {
+      type: String,
+      required: [true, 'DB: Phone is required.'],
+      match: phoneRegexp,
+    },
+    // birthday: {
+
+    // },
     token: {
       type: String,
       default: null
@@ -25,4 +39,4 @@ const SchemaUser = Schema(
   }
 );
 
-module.exports = model('user', SchemaUser);
+module.exports = model('user', userSchema);

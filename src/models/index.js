@@ -1,5 +1,7 @@
-const UserModel = require('../routes/UserModel');
+const UserModel = require('./UserModel');
+const PetModel = require('./PetModel');
 
 module.exports = {
-  UserModel
+  UserModel,
+  PetModel,
 };
