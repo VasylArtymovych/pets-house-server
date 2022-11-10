@@ -10,7 +10,7 @@ const app = express();
 
 /** Connect to Mongo */
 mongoose
-  .connect(config.mongo.url, { dbName: 'db_pets', retryWrites: true, w: 'majority' })
+  .connect(config.mongo.url)
   .then(() => {
     Logger.info('Connected to mongoDB');
     StartServer();
