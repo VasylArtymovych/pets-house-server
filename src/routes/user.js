@@ -7,14 +7,13 @@ const router = Router();
 router.get('/:id', UserCtrl.getUserData);
 // router.get('/current', authenticate, ctrlWrapper(ctrl.getCurrent));
 
-
 // створити ендпоінт для оновлення одного з полів контактної інформації про користувача
-router.patch('/:id', authenticate, UserCtrl.updateUserData);
+// router.patch('/:id', authenticate, UserCtrl.updateUserData);
 
 // створити ендпоінт для додавання карточки тварини користувача
-router.post('/', authenticate, UserCtrl.addUserPet);
+// router.post('/', authenticate, UserCtrl.addUserPet);
 
 // створити ендпоінт для видалення карточки з твариною користувача
-router.delete('/', authenticate, UserCtrl.deleteUserPet);
+// router.delete('/', authenticate, UserCtrl.deleteUserPet);
 
 module.exports = router;

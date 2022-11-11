@@ -1,12 +1,11 @@
-class AuthService {
-    
+class UserService {
   getUserData = () => {};
 
   updateUserData = () => {};
 
   addUserPet = () => {};
-  
-  deleteUserPet = () => {};  
+
+  deleteUserPet = () => {};
 }
 
-module.exports = new AuthService();
+module.exports = new UserService();
