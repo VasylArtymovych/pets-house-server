@@ -34,6 +34,10 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null
+    },
+    myPets: {
+      type: Array,
+      default: []  // массив id зверюшек
     }
   },
   {

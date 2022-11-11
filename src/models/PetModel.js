@@ -62,6 +62,10 @@ const petSchema = new Schema(
     // petImage: {            ????????????
     //     type: Image,
     // }
+    owner: {
+      type: String,
+      default: ''
+    },
   },
   {
     versionKey: false,
