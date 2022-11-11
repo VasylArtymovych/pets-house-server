@@ -29,7 +29,7 @@ const userSchema = new Schema(
     },
     birthday: {
       type: String,
-      match: phoneRegexp
+      match: birthdayRegexp
     },
     token: {
       type: String,
@@ -37,16 +37,16 @@ const userSchema = new Schema(
     },
     myPets: {
       type: Array,
-      default: []  // массив id зверюшек пользователя, с помощью populate реализовать
+      default: [] // массив id зверюшек пользователя, с помощью populate реализовать
     },
     notices: {
       type: Array,
-      default: []  // массив из объявлений ПОЛЬЗОВАТЕЛЯ
+      default: [] // массив из объявлений ПОЛЬЗОВАТЕЛЯ
     },
     favorites: {
       type: Array,
-      default: []  // массив из ПОНРАВИВШИХСЯ объявлений
-    },
+      default: [] // массив из ПОНРАВИВШИХСЯ объявлений
+    }
   },
   {
     versionKey: false,
