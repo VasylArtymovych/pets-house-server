@@ -62,6 +62,14 @@ class AuthService {
     return true;
   };
 
+  validateToken = async (id, token) => {
+    const user = await UserModel.findById(id);
+    if (user.token !== token) {
+      return false;
+    }
+    return true;
+  };
+
   generateToken = (id) => {
     const payload = { id };
     return Jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });

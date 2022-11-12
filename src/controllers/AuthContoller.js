@@ -31,4 +31,4 @@ class AuthController {
   });
 }
 
-module.exports = new AuthController(asyncHandler);
+module.exports = new AuthController();

@@ -7,7 +7,6 @@ const { handlers } = require('./helpers');
 const { AuthRouter } = require('./routes');
 const { UserRouter } = require('./routes');
 
-
 const app = express();
 
 /** Connect to Mongo */
@@ -36,7 +35,7 @@ const StartServer = () => {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(express.static('src/public'));
+  // app.use(express.static('src/public'));
 
   /** Rules of our API */
   app.use((req, res, next) => {
@@ -54,7 +53,6 @@ const StartServer = () => {
   /** Routes */
   app.use('/api/auth', AuthRouter);
   app.use('/api/user', UserRouter);
-
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);

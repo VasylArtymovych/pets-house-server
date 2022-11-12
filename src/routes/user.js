@@ -1,24 +1,19 @@
 const { Router } = require('express');
 const { UserCtrl } = require('../controllers');
+const { validateBody, validateToken } = require('../middleware');
+const { userSchema } = require('../schema');
 
 const router = Router();
 // в процессе
 // створити ендпоінт для отримання:- особистої інформації про користувача, - інформації про тварин користувача
-router.get('/current', UserCtrl.getUserData);
-// router.get('/current', authenticate, ctrlWrapper(ctrl.getCurrent));
+router.get('/current', validateToken, UserCtrl.getUserData);
 
-// створити ендпоінт для оновлення одного з полів контактної інформації про користувача
-// router.patch('/current/:id', authenticate, UserCtrl.updateUserData);
+router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updateUserData);
 
 // // створити ендпоінт для додавання карточки тварини користувача
-// router.post('/pets', authenticate, UserCtrl.addUserPet);
+router.post('/pets', UserCtrl.addUserPet);
 
 // // створити ендпоінт для видалення карточки з твариною користувача
-// router.delete('/pets/:id', authenticate, UserCtrl.deleteUserPet);
-
-
-
-
-
+router.delete('/pets/:id', validateToken, UserCtrl.deleteUserPet);
 
 module.exports = router;

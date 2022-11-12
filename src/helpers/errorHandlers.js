@@ -5,7 +5,7 @@ const unknownRoute = (req, res) => {
 const error = (error, req, res, next) => {
   const { status = 500, message = 'Server error', additionalInfo = {} } = error;
 
-  res.status(status).json({ message, additionalInfo });
+  res.status(status).json({ message: 'Server error', additionalInfo: message });
 };
 
 module.exports = { unknownRoute, error };
