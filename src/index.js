@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const { config } = require('./config');
 const { Logger } = require('./library');
 const { handlers } = require('./helpers');
-const { AuthRouter } = require('./routes');
-const { UserRouter } = require('./routes');
+const { AuthRouter, UserRouter, NoticeRouter } = require('./routes');
 
 const app = express();
 
@@ -53,6 +52,7 @@ const StartServer = () => {
   /** Routes */
   app.use('/api/auth', AuthRouter);
   app.use('/api/user', UserRouter);
+  app.use('/api/notice', NoticeRouter);
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);
