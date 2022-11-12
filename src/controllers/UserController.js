@@ -1,10 +1,17 @@
 const asyncHandler = require('express-async-handler');
 const { UserService } = require('../services');
 
+
 class UserController {
+
+  // надо будет еще дополнить pets через populate 
   getUserData = asyncHandler(async (req, res) => {
-    res.json({ msg: 'getUserData' });
+    const { id } = req.user;
+    const user = await UserService.getUserData(id);
+    
+    res.status(200).json({ code: 200, status: 'success', user });
   });
+
 
   updateUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
@@ -16,13 +23,16 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', user });
   });
 
+
   addUserPet = asyncHandler(async (req, res) => {
     res.json({ msg: 'addUserPet' });
   });
+
 
   deleteUserPet = asyncHandler(async (req, res) => {
     res.json({ msg: 'deleteUserPet' });
   });
 }
+
 
 module.exports = new UserController();

@@ -1,8 +1,16 @@
 const { UserModel } = require('../models');
 const { CustomError } = require('../helpers');
 
+
 class UserService {
-  getUserData = async () => {};
+  getUserData = async (id) => {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new CustomError('Unable to find User.');
+    }
+    return user;
+  };
+
 
   updateUserData = async (id, data) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...data }, { new: true });
@@ -11,9 +19,14 @@ class UserService {
     }
     return user;
   };
+  
+
   addUserPet = async () => {};
 
-  deleteUserPet = async () => {};
+
+  deleteUserPet = async () => { };
+  
 }
+
 
 module.exports = new UserService();
