@@ -9,36 +9,29 @@ const petSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'DB: Name is required.']
+      default: ''
+      // required: [true, 'DB: Name is required.']
     },
     dateOfBirth: {
       type: String,
-      required: [true, 'DB: Birthday is required.']
+      default: ''
+      // required: [true, 'DB: Date of birth is required.']
     },
     breed: {
       type: String,
-      required: [true, 'DB: Breed is required.']
+      default: ''
+      // required: [true, 'DB: Breed is required.']
     },
     comments: {
       type: String,
       default: ''
+      // required: [true, 'DB: Comments is required.']
     },
-    // sex: {
-    //   type: String,
-    //   enum: petSex,
-    // },
-    // inGoodHands: {
-    //   type: Boolean,
-    //   default: true,
-    // },
-    // care: {
-    //   type: String,
-    //   enum: careView,
-    // }
-
-    // petImage: {            /// ????????????
-    //     type: Image,
-    // },
+    petImage: {            
+      type: String,
+      default: ''
+      // required: [true, 'DB: Pet image is required.']
+    },
     owner: {
       type: String,
       default: ''
