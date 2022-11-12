@@ -8,7 +8,7 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      default: ''
+      required: [true, 'DB: Name is required.']
     },
     email: {
       type: String,
@@ -35,7 +35,7 @@ const userSchema = new Schema(
       type: String,
       default: null
     },
-    myPets: {
+    pets: {
       type: Array,
       default: [] // массив id зверюшек пользователя, с помощью populate реализовать
     },
