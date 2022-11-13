@@ -36,15 +36,18 @@ const userSchema = new Schema(
       default: null
     },
     pets: {
-      type: Array,
+      type: Schema.Types.ObjectId,
+      ref: 'pet',
       default: [] // массив id зверюшек пользователя, с помощью populate реализовать
     },
     notices: {
-      type: Array,
+      type: Schema.Types.ObjectId,
+      ref: 'notice',
       default: [] // массив из объявлений ПОЛЬЗОВАТЕЛЯ
     },
     favorites: {
-      type: Array,
+      type: Schema.Types.ObjectId,
+      ref: 'notice',
       default: [] // массив из ПОНРАВИВШИХСЯ объявлений
     }
   },

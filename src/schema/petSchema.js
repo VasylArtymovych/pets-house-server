@@ -26,8 +26,8 @@ const petSchema = Joi.object({
     .min(1)
     .max(6),
   comments: Joi.string().min(8).max(120),
-  sex: Joi.string().allow('Male', 'Female')
-  category: Joi.string().valid('lost', 'found', 'in good hands', 'sell')
+  sex: Joi.string().allow('Male', 'Female'),
+  category: Joi.string().valid('lost', 'found', 'inGoodHands', 'sell')
 });
 
 module.exports = petSchema;

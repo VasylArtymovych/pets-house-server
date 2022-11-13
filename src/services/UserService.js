@@ -4,7 +4,7 @@ const { CustomError } = require('../helpers');
 
 class UserService {
   getUserData = async (id) => {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(id).populate("pets");
     if (!user) {
       throw new CustomError('Unable to find User.');
     }
@@ -45,14 +45,15 @@ class UserService {
   deleteUserPet = async (id) => {
     const deletedPet = await PetModel.findByIdAndRemove(id);
      if (!deletedPet) {
-      throw new CustomError('Unable to find Pet.');
+      throw new CustomError('Unable to delete Pet.');
     }
 
     await UserModel.updateOne({ _id: deletedPet.owner },
-      {$pull:{pets:{$in:[deletedPet._id]}}}
+      { $pull: { pets: { $in: [deletedPet._id] } } }
+      
     )
 
-    return ;
+    return true;
    };
   
 }
