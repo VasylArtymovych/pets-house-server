@@ -25,13 +25,30 @@ class UserController {
 
 
   addUserPet = asyncHandler(async (req, res) => {
-    res.json({ msg: 'addUserPet' });
+    
+    const { id: owner } = req.user;
+    const { name, dateOfBirth, breed, comments } = req.body;
+
+    if (!name || !dateOfBirth || !breed || !comments) {
+      return res.status(400).json({ error: 'Missing required field', status: 'failed' });
+    }
+
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).json({ code: 400, status: 'failed', message: 'Provide data to update.' });
+    }
+
+    const pet = await UserService.addUserPet(owner, req.body);
+
+    res.status(200).json({ code: 200, status: 'success', pet });
   });
 
 
   deleteUserPet = asyncHandler(async (req, res) => {
-    res.json({ msg: 'deleteUserPet' });
-  });
+    const { id } = req.params;
+    await UserService.deleteUserPet(id);
+
+    res.status(200).json({ code: 200, status: 'pet was deleted' });
+  })
 }
 
 

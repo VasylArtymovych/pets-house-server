@@ -36,8 +36,10 @@ const NoticeSchema = new Schema(
       enum: ['lost', 'found', 'in good hands', 'sell']
     },
     owner: {
-      type: String
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true, 
+    }  
   },
   {
     versionKey: false,

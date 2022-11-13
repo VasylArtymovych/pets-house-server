@@ -9,23 +9,19 @@ const petSchema = new Schema(
   {
     name: {
       type: String,
-      default: ''
-      // required: [true, 'DB: Name is required.']
+      required: [true, 'DB: Name is required.']
     },
     dateOfBirth: {
       type: String,
-      default: ''
-      // required: [true, 'DB: Date of birth is required.']
+      required: [true, 'DB: Date of birth is required.']
     },
     breed: {
       type: String,
-      default: ''
-      // required: [true, 'DB: Breed is required.']
+      required: [true, 'DB: Breed is required.']
     },
     comments: {
       type: String,
-      default: ''
-      // required: [true, 'DB: Comments is required.']
+      required: [true, 'DB: Comments is required.']
     },
     petImage: {            
       type: String,
@@ -33,9 +29,10 @@ const petSchema = new Schema(
       // required: [true, 'DB: Pet image is required.']
     },
     owner: {
-      type: String,
-      default: ''
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,     
+  }  
   },
   {
     versionKey: false,

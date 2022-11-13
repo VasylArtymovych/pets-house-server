@@ -3,5 +3,5 @@ const petSchema = require('./petSchema');
 
 module.exports = {
   userSchema,
-  petSchema
+  petSchema,
 };
