@@ -17,6 +17,15 @@ class NoticeService {
 
     return newPet;
   };
+
+  getPetsByCategory = async (category) => {
+    const data = await NoticeModel.find({ category });
+    if (!data) {
+      throw new CustomError('Unable to get data from DB');
+    }
+
+    return data;
+  };
 }
 
 module.exports = new NoticeService();

@@ -16,7 +16,12 @@ class NoticeController {
 
   getPetsByCategory = asyncHandler(async (req, res) => {
     const { category } = req.params;
-    res.send(category);
+    if (category !== 'lost' || category !== 'found' || category !== 'in good hands' || category !== 'sell') {
+      res.status(400).json({ code: 400, status: 'failed', error: 'not valid endpoint.' });
+    }
+
+    const data = await NoticeService.getPetsByCategory(category);
+    res.status(200).json({ code: 200, status: 'success', data });
   });
 }
 
