@@ -1,15 +1,13 @@
 const asyncHandler = require('express-async-handler');
-const NewsModel = require('../models/NewsModel');
+const { NewsService } = require('../services');
 
 class NewsController {
   getAll = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 6, ...query } = req.query;
+    let { page = 1, limit = 6, ...rest } = req.query;
     const skip = (page - 1) * limit;
-    const result = await NewsModel.find({ ...query }, '-createdAt -updatedAt ', {
-      skip,
-      limit
-    });
-    // const result = await NewsModel.find();
+
+    const result = await NewsService.getAll(skip, limit, rest);
+
     res.json({
       code: 200,
       status: 'success',
