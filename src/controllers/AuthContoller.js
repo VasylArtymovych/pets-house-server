@@ -6,10 +6,10 @@ class AuthController {
     const { email, password, city, phone } = req.body;
 
     if (!email || !password || !city || !phone) {
-      return res.status(400).json({ error: 'Missing required field', status: 'failed' });
+      return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
     const user = await AuthService.register(req.body);
-    res.status(201).json({ code: 201, status: 'created', user });
+    c;
   });
 
   login = asyncHandler(async (req, res) => {
