@@ -12,6 +12,14 @@ class NewsService {
     }
     return result;
   };
+
+  add = async (body) => {
+    const result = await NewsModel.create({ ...body });
+    if (!result) {
+      throw new CustomError('Unable to create news');
+    }
+    return result;
+  };
 }
 
 module.exports = new NewsService();

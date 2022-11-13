@@ -17,7 +17,7 @@ class NewsController {
   });
 
   add = asyncHandler(async (req, res, next) => {
-    const result = await NewsModel.create(req.body);
+    const result = await NewsService.add(req.body);
     res.status(201).json(result);
   });
 }
