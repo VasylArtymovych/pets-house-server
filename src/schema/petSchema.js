@@ -4,7 +4,7 @@ const dateOfBirthRegExp =
 
 const petSchema = Joi.object({
   title: Joi.string()
-    .pattern(/^[a-zA-Z]+$/)
+    .pattern(/^[a-zA-Z\s]+$/)
     .min(2)
     .max(48),
   name: Joi.string()
@@ -16,17 +16,18 @@ const petSchema = Joi.object({
     .pattern(/^[a-zA-Z]+$/)
     .min(2)
     .max(24),
+  sex: Joi.string().valid('male', 'female'),
   location: Joi.string()
-    .pattern(/^[a-zA-Z]+$/)
+    .pattern(/^[a-zA-Z]+,?\s[a-zA-Z]+$/)
     .min(2)
     .max(24),
   price: Joi.string()
-    .pattern(/^[1-9]+$/)
+    .pattern(/^[1-9][0-9]+$/)
     .min(1)
     .max(6),
   comments: Joi.string().min(8).max(120),
   sex: Joi.string().allow('Male', 'Female')
+  category: Joi.string().valid('lost', 'found', 'in good hands', 'sell')
 });
-
 
 module.exports = petSchema;

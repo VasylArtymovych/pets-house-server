@@ -1,8 +1,4 @@
-// животные, которые привязываются к конкретному пользователю
 const { model, Schema } = require('mongoose');
-
-const petSex = ['Male', 'Female'];
-const careView = ['Lost', 'Found'];
 
 const NoticeSchema = new Schema(
   {
@@ -19,6 +15,11 @@ const NoticeSchema = new Schema(
     breed: {
       type: String
     },
+    sex: {
+      type: String,
+      enum: ['male', 'female'],
+      required: [true, 'DB: Sex is required.']
+    },
     location: {
       type: String,
       required: [true, 'DB: Location is required.']
@@ -30,27 +31,15 @@ const NoticeSchema = new Schema(
     comments: {
       type: String
     },
-    sex: {
+    category: {
       type: String,
-      enum: petSex
-    },
-    sell: {
-      type: Boolean,
-      default: false
-    },
-    inGoodHands: {
-      type: Boolean,
-      default: true
-    },
-    care: {
-      type: String,
-      enum: careView
+      enum: ['lost', 'found', 'in good hands', 'sell']
     },
     owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    required: true,     
-  }  
+    required: true, 
+    }  
   },
   {
     versionKey: false,
