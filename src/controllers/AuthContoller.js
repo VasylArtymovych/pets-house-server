@@ -9,7 +9,7 @@ class AuthController {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
     const user = await AuthService.register(req.body);
-    c;
+    res.status(201).json({ code: 201, status: 'created', user });
   });
 
   login = asyncHandler(async (req, res) => {
