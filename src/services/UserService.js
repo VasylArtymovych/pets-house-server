@@ -11,7 +11,6 @@ class UserService {
     return user;
   };
 
-
   updateUserData = async (id, data) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!user) {

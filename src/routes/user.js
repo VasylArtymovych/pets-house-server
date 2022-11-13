@@ -8,7 +8,6 @@ const router = Router();
 // створити ендпоінт для отримання:- особистої інформації про користувача, - інформації про тварин користувача
 router.get('/current', validateToken, UserCtrl.getUserData);
 
-// створити ендпоінт для оновлення данних користувача
 router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updateUserData);
 
 // // створити ендпоінт для додавання карточки тварини користувача

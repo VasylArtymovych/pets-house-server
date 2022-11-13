@@ -20,6 +20,10 @@ class AuthService {
       throw new CustomError('Unable to save User to DB.');
     }
 
+    const token = this.generateToken(newUser._id);
+    newUser.token = token;
+    await newUser.save();
+
     newUser.password = '';
     return newUser;
   };
@@ -43,7 +47,8 @@ class AuthService {
       throw new CustomError('Unable to save token.');
     }
 
-    return token;
+    user.password = '';
+    return user;
   };
 
   logout = async (id) => {
@@ -64,10 +69,10 @@ class AuthService {
 
   validateToken = async (id, token) => {
     const user = await UserModel.findById(id);
-    if (user.token !== token) {
-      return false;
+    if (user && user.token === token) {
+      return true;
     }
-    return true;
+    return false;
   };
 
   generateToken = (id) => {

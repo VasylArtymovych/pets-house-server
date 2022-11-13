@@ -1,60 +1,55 @@
 // животные, которые привязываются к конкретному пользователю
 const { model, Schema } = require('mongoose');
 
-const petSex = ["Male", "Female"];
-const careView = ["Lost", "Found"]
-
+const petSex = ['Male', 'Female'];
+const careView = ['Lost', 'Found'];
 
 const NoticeSchema = new Schema(
   {
-    titleOfAdd: {
+    title: {
       type: String,
-      required: [true, 'DB: Title of add is required.'],
+      required: [true, 'DB: Title of add is required.']
     },
     name: {
-      type: String,
-      required: [true, 'DB: Name is required.'],
+      type: String
+    },
+    dateOfBirth: {
+      type: String
     },
     breed: {
-      type: String,
-      required: [true, 'DB: Breed is required.'],
-    },
-    age: {
-      type: String,
-      required: [true, 'DB: Age is required.'],
+      type: String
     },
     location: {
       type: String,
-      required: [true, 'DB: Location is required.'],
-    },    
+      required: [true, 'DB: Location is required.']
+    },
     price: {
       type: String,
-      required: [true, 'DB: Price is required.'],      
+      required: [true, 'DB: Price is required.']
     },
     comments: {
-      type: String,
-      default: ''
+      type: String
     },
     sex: {
       type: String,
-      enum: petSex,        
+      enum: petSex
     },
     sell: {
-      type: Boolean,  
-      default: false,        
+      type: Boolean,
+      default: false
     },
     inGoodHands: {
       type: Boolean,
-      default: true,        
+      default: true
     },
     care: {
       type: String,
-      enum: careView,         
+      enum: careView
     },
     owner: {
       type: String,
       default: ''
-    },
+    }
   },
   {
     versionKey: false,

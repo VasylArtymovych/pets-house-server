@@ -19,15 +19,15 @@ class AuthController {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
 
-    const token = await AuthService.login(email, password);
-    res.status(200).json({ code: 200, status: 'success', token });
+    const user = await AuthService.login(email, password);
+    res.status(200).json({ code: 200, status: 'success', user });
   });
 
   logout = asyncHandler(async (req, res) => {
     const { id } = req.user;
     await AuthService.logout(id);
 
-    res.status(200).json({ code: 200, stutus: 'success', message: 'Logout success.' });
+    res.status(200).json({ code: 200, status: 'success', message: 'Logout success.' });
   });
 }
 
