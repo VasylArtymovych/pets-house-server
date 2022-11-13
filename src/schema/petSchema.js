@@ -25,5 +25,8 @@ const petSchema = Joi.object({
     .min(1)
     .max(6),
   comments: Joi.string().min(8).max(120),
-  sex: Joi.string().allow('mail', 'femail')
+  sex: Joi.string().allow('Male', 'Female')
 });
+
+
+module.exports = petSchema;

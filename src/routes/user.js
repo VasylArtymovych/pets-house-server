@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { UserCtrl } = require('../controllers');
-const { validateBody, validateToken } = require('../middleware');
-const { userSchema } = require('../schema');
+const { validateBody, validateToken, isValidId } = require('../middleware');
+const { userSchema, petSchema } = require('../schema');
 
 const router = Router();
 // в процессе
@@ -11,9 +11,9 @@ router.get('/current', validateToken, UserCtrl.getUserData);
 router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updateUserData);
 
 // // створити ендпоінт для додавання карточки тварини користувача
-router.post('/pets', validateToken, UserCtrl.addUserPet);
+router.post('/pets', validateToken, validateBody(petSchema), UserCtrl.addUserPet);
 
 // // створити ендпоінт для видалення карточки з твариною користувача
-router.delete('/pets/:id', validateToken, UserCtrl.deleteUserPet);
+router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
 module.exports = router;

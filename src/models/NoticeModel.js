@@ -47,9 +47,10 @@ const NoticeSchema = new Schema(
       enum: careView
     },
     owner: {
-      type: String,
-      default: ''
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,     
+  }  
   },
   {
     versionKey: false,
