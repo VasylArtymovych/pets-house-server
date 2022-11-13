@@ -23,6 +23,10 @@ class NoticeController {
     const data = await NoticeService.getPetsByCategory(category);
     res.status(200).json({ code: 200, status: 'success', data });
   });
+
+  getPetsById = asyncHandler(async (req, res) => {
+    res.send('getPetsById');
+  });
 }
 
 module.exports = new NoticeController();
