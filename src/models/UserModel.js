@@ -8,7 +8,7 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      default: ''
+      required: [true, 'DB: Name is required.']
     },
     email: {
       type: String,
@@ -29,16 +29,25 @@ const userSchema = new Schema(
     },
     birthday: {
       type: String,
-      match: phoneRegexp
+      match: birthdayRegexp
     },
     token: {
       type: String,
       default: null
     },
-    myPets: {
-      type: Array,
-      default: []  // массив id зверюшек
-    }
+    pets: [{ type: Schema.Types.ObjectId, ref: 'pet' }],
+    notices: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'notice'
+      }
+    ],
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'notice'
+      }
+    ]
   },
   {
     versionKey: false,

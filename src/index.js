@@ -4,9 +4,8 @@ const mongoose = require('mongoose');
 const { config } = require('./config');
 const { Logger } = require('./library');
 const { handlers } = require('./helpers');
-const { AuthRouter } = require('./routes');
-const { UserRouter } = require('./routes');
-const { NewsRouter } = require('./routes');
+const { AuthRouter, UserRouter, NoticeRouter, NewsRouter } = require('./routes');
+
 
 const app = express();
 
@@ -36,7 +35,7 @@ const StartServer = () => {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(express.static('src/public'));
+  // app.use(express.static('src/public'));
 
   /** Rules of our API */
   app.use((req, res, next) => {
@@ -55,6 +54,8 @@ const StartServer = () => {
   app.use('/api/auth', AuthRouter);
   app.use('/api/user', UserRouter);
   app.use('/api/news', NewsRouter);
+  app.use('/api/notice', NoticeRouter);
+
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);

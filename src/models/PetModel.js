@@ -1,71 +1,38 @@
+// животные, которые привязываются к конкретному пользователю
 const { model, Schema } = require('mongoose');
 
 // const phoneRegexp=
-const petSex = ["Male", "Female"];
+// const petSex = ["Male", "Female"];
 // const careView = ["lost", "found"];
 
 const petSchema = new Schema(
   {
-    titleOfAdd: {
+    name: {
       type: String,
-      required: [true, 'DB: Title of add is required.'],
+      required: [true, 'DB: Name is required.']
     },
-    petName: {
+    dateOfBirth: {
       type: String,
-      required: [true, 'DB: Name is required.'],
-    },
-    birthday: {
-      type: String,
-      required: [true, 'DB: Birthday is required.'],
+      required: [true, 'DB: Date of birth is required.']
     },
     breed: {
       type: String,
-      required: [true, 'DB: Breed is required.'],
-    },
-    place: {
-      type: String,
-      required: [true, 'DB: Place is required.'],
-    },
-    age: {
-      type: String,
-      required: [true, 'DB: Age is required.'],
-    },
-    location: {
-      type: String,
-      required: [true, 'DB: Location is required.'],
-    },    
-    price: {
-      type: String,
-      required: [true, 'DB: Price is required.'],      
+      required: [true, 'DB: Breed is required.']
     },
     comments: {
       type: String,
-      default: ''
+      required: [true, 'DB: Comments is required.']
     },
-    sex: {
+    petImage: {            
       type: String,
-      enum: petSex,        
+      default: ''
+      // required: [true, 'DB: Pet image is required.']
     },
-    // sell: {
-    //   type: Boolean,   ???? or string
-    //   default: false,        
-    // },
-    inGoodHands: {
-      type: Boolean,
-      default: true,        
-    },
-    // care: {
-    //   type: String,
-    //   enum: careView,         
-    // }
-    
-    // petImage: {            ????????????
-    //     type: Image,
-    // }
     owner: {
-      type: String,
-      default: ''
-    },
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,     
+  }  
   },
   {
     versionKey: false,
