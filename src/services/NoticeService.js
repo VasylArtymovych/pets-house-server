@@ -2,23 +2,25 @@ const { NoticeModel } = require('../models');
 const { CustomError } = require('../helpers');
 
 class NoticeService {
-  addPetToCategory = async (id, data) => {
+  addNoticeToCategory = async (id, data) => {
     const { title, name, dateOfBirth, breed } = data;
-    const pet = await NoticeModel.findOne({ title, name, dateOfBirth, breed });
+    const notice = await NoticeModel.findOne({ title, name, dateOfBirth, breed });
 
-    if (pet) {
-      throw new CustomError(`Pet already exist.`, 400, 'Please check your posts.');
+    if (notice) {
+      throw new CustomError(`Notice already exist.`, 400, 'Please check your posts.');
     }
 
-    const newPet = await NoticeModel.create({ ...data, owner: id });
-    if (!newPet) {
-      throw new CustomError('Unable to save Pet to DB.');
+    const newNotice = await NoticeModel.create({ ...data, owner: id });
+    if (!newNotice) {
+      throw new CustomError('Unable to save Notice to DB.');
     }
 
-    return newPet;
+    return newNotice;
   };
+  
+
   // add pagination in future!
-  getPetsByCategory = async (category) => {
+  getNoticesByCategory = async (category) => {
     const data = await NoticeModel.find({ category });
 
     if (!data) {
@@ -28,15 +30,17 @@ class NoticeService {
     return data;
   };
 
-  getPetById = async (id) => {
-    const pet = await NoticeModel.findById(id, { createdAt: 0, updatedAt: 0 });
 
-    if (!pet) {
-      throw new CustomError(`Pet with id: ${id} not found.`, 400, 'Provide valid id.');
+  getNoticeById = async (id) => {
+    const notice = await NoticeModel.findById(id, { createdAt: 0, updatedAt: 0 });
+
+    if (!notice) {
+      throw new CustomError(`Notice with id: ${id} not found.`, 400, 'Provide valid id.');
     }
 
-    return pet;
+    return notice;
   };
 }
+
 
 module.exports = new NoticeService();

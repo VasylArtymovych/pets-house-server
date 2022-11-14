@@ -2,27 +2,34 @@ const asyncHandler = require('express-async-handler');
 const { NoticeService } = require('../services');
 
 class NoticeController {
-  addPetToCategory = asyncHandler(async (req, res) => {
+  // task 17
+  addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const { title, sex, location, price } = req.body;
 
     if (!title || !sex || !location || !price) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
-    const pet = await NoticeService.addPetToCategory(id, req.body);
-    res.status(201).json({ code: 201, status: 'created', pet });
+
+    const notice = await NoticeService.addNoticeToCategory(id, req.body);
+
+    res.status(201).json({ code: 201, status: 'created', notice });
   });
 
-  getPetsByCategory = asyncHandler(async (req, res) => {
+  // task 12
+  getNoticesByCategory = asyncHandler(async (req, res) => {
     const { categoryName } = req.params;
-    const data = await NoticeService.getPetsByCategory(categoryName);
+
+    const data = await NoticeService.getNoticesByCategory(categoryName);
+    
     res.status(200).json({ code: 200, status: 'success', data });
   });
 
-  getPetById = asyncHandler(async (req, res) => {
+  // task 13
+  getNoticeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const pet = await NoticeService.getPetById(id);
-    res.status(200).json({ code: 200, status: 'success', pet });
+    const notice = await NoticeService.getNoticeById(id);
+    res.status(200).json({ code: 200, status: 'success', notice });
   });
 }
 
