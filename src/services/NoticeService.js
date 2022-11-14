@@ -17,11 +17,10 @@ class NoticeService {
 
     return newNotice;
   };
-  
 
   // add pagination in future!
-  getNoticesByCategory = async (category) => {
-    const data = await NoticeModel.find({ category });
+  getNoticesByCategory = async (category, skip, limit) => {
+    const data = await NoticeModel.find({ category }, { createdAt: 0, updatedAt: 0 }, { skip, limit });
 
     if (!data) {
       throw new CustomError('Unable to get data from DB.');
@@ -29,7 +28,6 @@ class NoticeService {
 
     return data;
   };
-
 
   getNoticeById = async (id) => {
     const notice = await NoticeModel.findById(id, { createdAt: 0, updatedAt: 0 });
@@ -41,6 +39,5 @@ class NoticeService {
     return notice;
   };
 }
-
 
 module.exports = new NoticeService();

@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const { UserModel } = require('../models');
 const { UserService } = require('../services');
 
 class UserController {
@@ -48,7 +49,11 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was added to Favorite.' });
   });
 
-  getUserFavorites = asyncHandler(async (req, res) => {});
+  getUserFavorites = asyncHandler(async (req, res) => {
+    const { id } = req.user;
+    const favorites = await UserService.getUserFavorites(id);
+    res.status(200).json({ code: 200, status: 'success', favorites });
+  });
 
   deletePetFromFavorites = asyncHandler(async (req, res) => {
     const { id: petId } = req.params;

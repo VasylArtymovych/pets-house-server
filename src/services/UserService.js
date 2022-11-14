@@ -57,7 +57,13 @@ class UserService {
     return true;
   };
 
-  getUserFavorites = async (userId, petId) => {};
+  getUserFavorites = async (id) => {
+    const user = await UserModel.findById(id).populate('favorites');
+    if (!user) {
+      throw new CustomError('Unable to get favorites.');
+    }
+    return user.favorites;
+  };
 
   deletePetFromFavorites = async (userId, petId) => {
     const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: petId } });
