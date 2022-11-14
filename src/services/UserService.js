@@ -60,10 +60,10 @@ class UserService {
   };
 
 
-  addPetToFavorites = async (userId, petId) => {
-    const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: petId } });
+  addNoticeToFavorites = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: noticeId } });
     if (!user) {
-      throw new CustomError('Unable to add pet to favorites.');
+      throw new CustomError('Unable to add notice to favorites.');
     }
 
     return true;
@@ -74,13 +74,14 @@ class UserService {
     if (!user) {
       throw new CustomError('Unable to get favorites.');
     }
+
     return user.favorites;
   };
 
-  deletePetFromFavorites = async (userId, petId) => {
-    const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: petId } });
+  deleteNoticeFromFavorites = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: noticeId } });
     if (!user) {
-      throw new CustomError('Unable to add pet to favorites.');
+      throw new CustomError('Unable to delete notice from favorites.');
     }
 
     return true;
