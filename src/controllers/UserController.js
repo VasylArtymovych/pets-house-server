@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler');
-const { UserModel } = require('../models');
 const { UserService } = require('../services');
 
 class UserController {
@@ -39,6 +38,16 @@ class UserController {
     await UserService.deleteUserPet(id);
 
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was deleted' });
+  });
+
+  updatePetData = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).json({ code: 400, status: 'failed', message: 'Provide data to update.' });
+    }
+    const pet = await UserService.updatePetData(id, req.body);
+
+    res.status(200).json({ code: 200, status: 'success', pet });
   });
 
   addPetToFavorites = asyncHandler(async (req, res) => {

@@ -10,6 +10,7 @@ class UserService {
     return user;
   };
 
+
   updateUserData = async (id, data) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!user) {
@@ -18,9 +19,9 @@ class UserService {
     return user;
   };
 
+
   addUserPet = async (owner, data) => {
     const { name, dateOfBirth, breed } = data;
-
     const pet = await PetModel.findOne({ name, dateOfBirth, breed });
 
     if (pet) {
@@ -37,6 +38,7 @@ class UserService {
     return newPet;
   };
 
+
   deleteUserPet = async (id) => {
     const deletedPet = await PetModel.findByIdAndRemove(id);
     if (!deletedPet) {
@@ -47,6 +49,16 @@ class UserService {
 
     return true;
   };
+
+  
+  updatePetData = async (id, data) => {
+    const pet = await PetModel.findByIdAndUpdate(id, { ...data }, { new: true });
+    if (!pet) {
+      throw new CustomError('Unable to update Pet data.');
+    }
+    return pet;
+  };
+
 
   addPetToFavorites = async (userId, petId) => {
     const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: petId } });

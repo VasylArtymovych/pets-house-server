@@ -16,7 +16,7 @@ router.post('/pets', validateToken, validateBody(petSchema), UserCtrl.addUserPet
 // // створити ендпоінт для видалення карточки з твариною користувача
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
-// router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
+router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
 
 //add pet to favorites:
 router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addPetToFavorites);
