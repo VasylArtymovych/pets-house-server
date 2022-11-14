@@ -33,7 +33,7 @@ const NoticeSchema = new Schema(
     },
     category: {
       type: String,
-      enum: ['lost', 'found', 'in good hands', 'sell']
+      enum: ['lost', 'found', 'inGoodHands', 'sell']
     },
     owner: {
     type: Schema.Types.ObjectId,

@@ -2,24 +2,35 @@ const { NewsModel } = require('../models');
 const { CustomError } = require('../helpers');
 
 class NewsService {
-  getAll = async (skip, limit, rest) => {
-    const result = await NewsModel.find({ skip, limit, ...rest }, '-createdAt -updatedAt', {
-      skip,
-      limit
-    });
-    if (!result) {
-      throw new CustomError('Unable to get news');
-    }
-    return result;
-  };
+  // Natali
+  // getAllNews = async (skip, limit, rest) => {
+  //   const result = await NewsModel.find({ skip, limit, ...rest }, '-createdAt -updatedAt', {
+  //     skip,
+  //     limit
+  //   });
+  //   if (!result) {
+  //     throw new CustomError('Unable to get news');
+  //   }
+  //   return result;
+  // };
 
-  add = async (body) => {
-    const result = await NewsModel.create({ ...body });
-    if (!result) {
-      throw new CustomError('Unable to create news');
+  getAllNews = async (req, res) => {
+    const data = await NewsModel.find();
+
+    if (!data) {
+      throw new CustomError('Unable to get News from DB.');
     }
-    return result;
-  };
+
+    return data;
+  }
+
+  // addNews = async (body) => {
+  //   const result = await NewsModel.create({ ...body });
+  //   if (!result) {
+  //     throw new CustomError('Unable to create news');
+  //   }
+  //   return result;
+  // };
 }
 
 module.exports = new NewsService();
