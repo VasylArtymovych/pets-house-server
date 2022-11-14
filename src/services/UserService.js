@@ -86,6 +86,26 @@ class UserService {
 
     return true;
   };
+
+
+  getUserNotices = async (id) => {
+    const user = await UserModel.findById(id).populate('notices');
+    if (!user) {
+      throw new CustomError('Unable to get notices.');
+    }
+
+    return user.notices;
+  };
+
+
+  deleteUserNotice = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $pull: { notices: noticeId } });
+    if (!user) {
+      throw new CustomError('Unable to delete notice.');
+    }
+
+    return true;
+  };
 }
 
 module.exports = new UserService();
