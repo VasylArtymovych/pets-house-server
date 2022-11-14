@@ -17,15 +17,25 @@ class NoticeService {
 
     return newPet;
   };
-
+  // add pagination in future!
   getPetsByCategory = async (category) => {
     const data = await NoticeModel.find({ category });
 
     if (!data) {
-      throw new CustomError('Unable to get data from DB');
+      throw new CustomError('Unable to get data from DB.');
     }
 
     return data;
+  };
+
+  getPetById = async (id) => {
+    const pet = await NoticeModel.findById(id, { createdAt: 0, updatedAt: 0 });
+
+    if (!pet) {
+      throw new CustomError(`Pet with id: ${id} not found.`, 400, 'Provide valid id.');
+    }
+
+    return pet;
   };
 }
 

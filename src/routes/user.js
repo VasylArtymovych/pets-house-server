@@ -18,5 +18,10 @@ router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
 // router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
 
+//add pet to favorites:
+router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addPetToFavorites);
+router.get('/favorites/', validateToken, UserCtrl.getUserFavorites);
+
+router.delete('/favorites/:id', validateToken, isValidId, UserCtrl.deletePetFromFavorites);
 
 module.exports = router;

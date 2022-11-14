@@ -1,11 +1,11 @@
 const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { config } = require('./config');
 const { Logger } = require('./library');
 const { handlers } = require('./helpers');
 const { AuthRouter, UserRouter, NoticeRouter, NewsRouter } = require('./routes');
-
 
 const app = express();
 
@@ -35,6 +35,7 @@ const StartServer = () => {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  app.use(cors({ origin: '*' }));
   // app.use(express.static('src/public'));
 
   /** Rules of our API */
@@ -53,9 +54,8 @@ const StartServer = () => {
   /** Routes */
   app.use('/api/auth', AuthRouter);
   app.use('/api/user', UserRouter);
-  app.use('/api/news', NewsRouter);
   app.use('/api/notice', NoticeRouter);
-
+  app.use('/api/news', NewsRouter);
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);

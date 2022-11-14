@@ -1,12 +1,11 @@
 const AuthCtrl = require('./AuthContoller');
 const UserCtrl = require('./UserController');
-const NewsController = require('./NewsController');
 const NoticeCtrl = require('./NoticeController');
-
+const NewsController = require('./NewsController');
 
 module.exports = {
   AuthCtrl,
   UserCtrl,
+  NoticeCtrl,
   NewsController
-  NoticeCtrl
 };

@@ -1,10 +1,9 @@
 const { UserModel, PetModel } = require('../models');
 const { CustomError } = require('../helpers');
 
-
 class UserService {
   getUserData = async (id) => {
-    const user = await UserModel.findById(id).populate("pets");
+    const user = await UserModel.findById(id).populate('pets');
     if (!user) {
       throw new CustomError('Unable to find User.');
     }
@@ -18,45 +17,56 @@ class UserService {
     }
     return user;
   };
-  
 
   addUserPet = async (owner, data) => {
     const { name, dateOfBirth, breed } = data;
 
     const pet = await PetModel.findOne({ name, dateOfBirth, breed });
-    
+
     if (pet) {
       throw new CustomError('Pet already exists in DB.');
-    }  
-    
+    }
+
     const newPet = await PetModel.create({ ...data, owner });
     if (!newPet) {
       throw new CustomError('Unable to create new Pet data.');
     }
 
-    await UserModel.updateOne({ _id: owner },
-      { $push: { pets: newPet._id } }
-    )
+    await UserModel.updateOne({ _id: owner }, { $push: { pets: newPet._id } });
 
     return newPet;
   };
 
-
   deleteUserPet = async (id) => {
     const deletedPet = await PetModel.findByIdAndRemove(id);
-     if (!deletedPet) {
+    if (!deletedPet) {
       throw new CustomError('Unable to delete Pet.');
     }
 
-    await UserModel.updateOne({ _id: deletedPet.owner },
-      { $pull: { pets: { $in: [deletedPet._id] } } }
-      
-    )
+    await UserModel.updateOne({ _id: deletedPet.owner }, { $pull: { pets: { $in: [deletedPet._id] } } });
 
     return true;
-   };
-  
-}
+  };
 
+  addPetToFavorites = async (userId, petId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: petId } });
+    if (!user) {
+      throw new CustomError('Unable to add pet to favorites.');
+    }
+
+    return true;
+  };
+
+  getUserFavorites = async (userId, petId) => {};
+
+  deletePetFromFavorites = async (userId, petId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: petId } });
+    if (!user) {
+      throw new CustomError('Unable to add pet to favorites.');
+    }
+
+    return true;
+  };
+}
 
 module.exports = new UserService();

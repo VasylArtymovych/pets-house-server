@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const Jwt = require('jsonwebtoken');
+const { config } = require('../config');
 const { UserModel } = require('../models');
 const { CustomError } = require('../helpers');
 
@@ -77,7 +78,7 @@ class AuthService {
 
   generateToken = (id) => {
     const payload = { id };
-    return Jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    return Jwt.sign(payload, config.token.secret, { expiresIn: '8h' });
   };
 }
 

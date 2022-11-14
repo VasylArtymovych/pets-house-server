@@ -9,23 +9,20 @@ class NoticeController {
     if (!title || !sex || !location || !price) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
-
     const pet = await NoticeService.addPetToCategory(id, req.body);
     res.status(201).json({ code: 201, status: 'created', pet });
   });
 
   getPetsByCategory = asyncHandler(async (req, res) => {
-    const { category } = req.params;
-    if (category !== 'lost' || category !== 'found' || category !== 'in good hands' || category !== 'sell') {
-      res.status(400).json({ code: 400, status: 'failed', error: 'not valid endpoint.' });
-    }
-
-    const data = await NoticeService.getPetsByCategory(category);
+    const { categoryName } = req.params;
+    const data = await NoticeService.getPetsByCategory(categoryName);
     res.status(200).json({ code: 200, status: 'success', data });
   });
 
-  getPetsById = asyncHandler(async (req, res) => {
-    res.send('getPetsById');
+  getPetById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const pet = await NoticeService.getPetById(id);
+    res.status(200).json({ code: 200, status: 'success', pet });
   });
 }
 

@@ -1,12 +1,11 @@
 const AuthRouter = require('./auth');
 const UserRouter = require('./user');
-const NewsRouter = require('./news');
 const NoticeRouter = require('./notice');
-
+const NewsRouter = require('./news');
 
 module.exports = {
   AuthRouter,
   UserRouter,
+  NoticeRouter,
   NewsRouter
-  NoticeRouter
 };
