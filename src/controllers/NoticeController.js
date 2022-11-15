@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const { NoticeService } = require('../services');
 
+
 class NoticeController {
+
   addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
     const { title, sex, location } = req.body;
@@ -15,6 +17,7 @@ class NoticeController {
     res.status(201).json({ code: 201, status: 'created', notice });
   });
 
+
   getNoticesByCategory = asyncHandler(async (req, res) => {
     const { categoryName } = req.params;
     let { page = 1, limit = 10 } = req.query;
@@ -27,11 +30,13 @@ class NoticeController {
     res.status(200).json({ code: 200, status: 'success', data, page, limit });
   });
 
+
   getNoticeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const notice = await NoticeService.getNoticeById(id);
     res.status(200).json({ code: 200, status: 'success', notice });
   });
+
 }
 
 module.exports = new NoticeController();

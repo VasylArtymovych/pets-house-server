@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const { AuthService } = require('../services');
 
+
 class AuthController {
+
   register = asyncHandler(async (req, res) => {
     const { email, password, city, phone } = req.body;
 
@@ -31,6 +33,7 @@ class AuthController {
 
     res.status(200).json({ code: 200, status: 'success', message: 'Logout success.' });
   });
+
 }
 
 module.exports = new AuthController();

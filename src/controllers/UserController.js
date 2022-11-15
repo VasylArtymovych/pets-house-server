@@ -1,13 +1,16 @@
 const asyncHandler = require('express-async-handler');
 const { UserService } = require('../services');
 
+
 class UserController {
+
   getUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const user = await UserService.getUserData(id);
 
     res.status(200).json({ code: 200, status: 'success', user });
   });
+
 
   updateUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
@@ -22,6 +25,7 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', user });
   });
 
+
   addUserPet = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
     const { name, dateOfBirth, breed, comments } = req.body;
@@ -35,12 +39,14 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', pet });
   });
 
+
   deleteUserPet = asyncHandler(async (req, res) => {
     const { id } = req.params;
     await UserService.deleteUserPet(id);
 
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was deleted' });
   });
+
 
   updateUserPetData = asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -52,6 +58,7 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', pet });
   });
 
+
   addNoticeToFavorites = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
     const { id: userId } = req.user;
@@ -60,12 +67,14 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was added to Favorite.' });
   });
 
+
   getUserFavorites = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const favorites = await UserService.getUserFavorites(id);
 
     res.status(200).json({ code: 200, status: 'success', favorites });
   });
+
 
   deleteNoticeFromFavorites = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
@@ -75,12 +84,14 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted from Favorite.' });
   });
 
+
   getUserNotices = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const notices = await UserService.getUserNotices(id);
 
     res.status(200).json({ code: 200, status: 'success', notices });
   });
+
 
   deleteUserNotice = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
@@ -89,6 +100,7 @@ class UserController {
 
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted.' });
   });
+
 }
 
 module.exports = new UserController();
