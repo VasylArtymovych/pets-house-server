@@ -25,7 +25,7 @@ class UserService {
     const pet = await PetModel.findOne({ name, dateOfBirth, breed });
 
     if (pet) {
-      throw new CustomError('Pet already exists in DB.');
+      throw new CustomError(`Pet already exist.`, 400, 'Please check your posts.');
     }
 
     const newPet = await PetModel.create({ ...data, owner });

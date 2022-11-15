@@ -1,8 +1,8 @@
-const { NoticeModel } = require('../models');
+const { NoticeModel, UserModel } = require('../models');
 const { CustomError } = require('../helpers');
 
 class NoticeService {
-  addNoticeToCategory = async (id, data) => {
+  addNoticeToCategory = async (owner, data) => {
     const { title, name, dateOfBirth, breed } = data;
     const notice = await NoticeModel.findOne({ title, name, dateOfBirth, breed });
 
@@ -10,10 +10,12 @@ class NoticeService {
       throw new CustomError(`Notice already exist.`, 400, 'Please check your posts.');
     }
 
-    const newNotice = await NoticeModel.create({ ...data, owner: id });
+    const newNotice = await NoticeModel.create({ ...data, owner });
     if (!newNotice) {
-      throw new CustomError('Unable to save Notice to DB.');
+      throw new CustomError('Unable to create new Notice data.');
     }
+
+    await UserModel.updateOne({ _id: owner }, { $push: { notices: newNotice._id } });
 
     return newNotice;
   };
