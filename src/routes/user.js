@@ -13,7 +13,7 @@ router.post('/pets', validateToken, validateBody(petSchema), UserCtrl.addUserPet
 
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
-router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
+router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updateUserPetData);
 
 router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addNoticeToFavorites);
 
@@ -24,6 +24,5 @@ router.delete('/favorites/:id', validateToken, isValidId, UserCtrl.deleteNoticeF
 router.get('/notices', validateToken, UserCtrl.getUserNotices);
 
 router.delete('/notices/:id', validateToken, isValidId, UserCtrl.deleteUserNotice);
-
 
 module.exports = router;

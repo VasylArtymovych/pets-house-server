@@ -1,15 +1,15 @@
-const { UserModel, PetModel } = require('../models');
+const { UserModel, PetModel, NoticeModel } = require('../models');
 const { CustomError } = require('../helpers');
 
 class UserService {
   getUserData = async (id) => {
-    const user = await UserModel.findById(id).populate('pets');
+    const user = await UserModel.findById(id, { password: 0 }).populate('pets');
     if (!user) {
       throw new CustomError('Unable to find User.');
     }
+
     return user;
   };
-
 
   updateUserData = async (id, data) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...data }, { new: true });
@@ -18,7 +18,6 @@ class UserService {
     }
     return user;
   };
-
 
   addUserPet = async (owner, data) => {
     const { name, dateOfBirth, breed } = data;
@@ -38,7 +37,6 @@ class UserService {
     return newPet;
   };
 
-
   deleteUserPet = async (id) => {
     const deletedPet = await PetModel.findByIdAndRemove(id);
     if (!deletedPet) {
@@ -50,15 +48,13 @@ class UserService {
     return true;
   };
 
-  
-  updatePetData = async (id, data) => {
+  updateUserPetData = async (id, data) => {
     const pet = await PetModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!pet) {
       throw new CustomError('Unable to update Pet data.');
     }
     return pet;
   };
-
 
   addNoticeToFavorites = async (userId, noticeId) => {
     const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: noticeId } });
@@ -87,7 +83,6 @@ class UserService {
     return true;
   };
 
-
   getUserNotices = async (id) => {
     const user = await UserModel.findById(id).populate('notices');
     if (!user) {
@@ -97,8 +92,12 @@ class UserService {
     return user.notices;
   };
 
-
   deleteUserNotice = async (userId, noticeId) => {
+    const deletedNotice = await NoticeModel.findOneAndDelete({ _id: noticeId });
+    if (!deletedNotice) {
+      throw new CustomError('Unable to delete notice.');
+    }
+
     const user = await UserModel.updateOne({ _id: userId }, { $pull: { notices: noticeId } });
     if (!user) {
       throw new CustomError('Unable to delete notice.');

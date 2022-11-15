@@ -6,7 +6,7 @@ class NoticeController {
     const { id: owner } = req.user;
     const { title, sex, location, price } = req.body;
 
-    if (!title || !sex || !location || !price) {
+    if (!title || !sex || !location) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
     }
 
@@ -14,7 +14,6 @@ class NoticeController {
 
     res.status(201).json({ code: 201, status: 'created', notice });
   });
-
 
   getNoticesByCategory = asyncHandler(async (req, res) => {
     const { categoryName } = req.params;
@@ -27,7 +26,6 @@ class NoticeController {
 
     res.status(200).json({ code: 200, status: 'success', data, page, limit });
   });
-
 
   getNoticeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
