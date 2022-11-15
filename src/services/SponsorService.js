@@ -2,15 +2,15 @@ const { CustomError } = require('../helpers');
 const fs = require('fs/promises');
 const path = require('path');
 
-const newPath = path.resolve('src/models/news.json');
+const sponsorsPath = path.resolve('src/models/sponsors.json');
 
 
-class NewsService {
+class SponsorService {
   
-  getAllNews = async () => {
-    const data = await fs.readFile(newPath);
+  getAllSponsors = async () => {
+    const data = await fs.readFile(sponsorsPath);
     if (!data) {
-      throw new CustomError('Unable to get news');
+      throw new CustomError('Unable to get sponsors');
     }
     const result = JSON.parse(data);
     if (!result) {
@@ -23,4 +23,4 @@ class NewsService {
 }
 
 
-module.exports = new NewsService();
+module.exports = new SponsorService();

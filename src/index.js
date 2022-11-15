@@ -5,7 +5,7 @@ const cors = require('cors');
 const { config } = require('./config');
 const { Logger } = require('./library');
 const { handlers } = require('./helpers');
-const { AuthRouter, UserRouter, NoticeRouter, NewsRouter } = require('./routes');
+const { AuthRouter, UserRouter, NoticeRouter, NewsRouter, SponsorRouter } = require('./routes');
 
 const app = express();
 
@@ -56,6 +56,8 @@ const StartServer = () => {
   app.use('/api/user', UserRouter);
   app.use('/api/notice', NoticeRouter);
   app.use('/api/news', NewsRouter);
+  app.use('/api/sponsor', SponsorRouter);
+
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);

@@ -35,7 +35,11 @@ const userSchema = new Schema(
       type: String,
       default: null
     },
-    pets: [{ type: Schema.Types.ObjectId, ref: 'pet' }],
+    pets: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'pet'
+      }],
     notices: [
       {
         type: Schema.Types.ObjectId,
