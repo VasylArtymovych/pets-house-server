@@ -4,7 +4,7 @@ const { NoticeService } = require('../services');
 class NoticeController {
   addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
-    const { title, sex, location, price } = req.body;
+    const { title, sex, location } = req.body;
 
     if (!title || !sex || !location) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
