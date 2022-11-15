@@ -4,24 +4,26 @@ const { validateBody, validateToken, isValidId } = require('../middleware');
 const { userSchema, petSchema } = require('../schema');
 
 const router = Router();
-// в процессе
-// створити ендпоінт для отримання:- особистої інформації про користувача, - інформації про тварин користувача
+
 router.get('/current', validateToken, UserCtrl.getUserData);
 
 router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updateUserData);
 
-// // створити ендпоінт для додавання карточки тварини користувача
 router.post('/pets', validateToken, validateBody(petSchema), UserCtrl.addUserPet);
 
-// // створити ендпоінт для видалення карточки з твариною користувача
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
-// router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
+router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updatePetData);
 
-//add pet to favorites:
-router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addPetToFavorites);
-router.get('/favorites/', validateToken, UserCtrl.getUserFavorites);
+router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addNoticeToFavorites);
 
-router.delete('/favorites/:id', validateToken, isValidId, UserCtrl.deletePetFromFavorites);
+router.get('/favorites', validateToken, UserCtrl.getUserFavorites);
+
+router.delete('/favorites/:id', validateToken, isValidId, UserCtrl.deleteNoticeFromFavorites);
+
+router.get('/notices', validateToken, UserCtrl.getUserNotices);
+
+router.delete('/notices/:id', validateToken, isValidId, UserCtrl.deleteUserNotice);
+
 
 module.exports = router;

@@ -2,7 +2,6 @@ const asyncHandler = require('express-async-handler');
 const { AuthService } = require('../services');
 
 class AuthController {
-  // Task 3
   register = asyncHandler(async (req, res) => {
     const { email, password, city, phone } = req.body;
 
@@ -13,7 +12,7 @@ class AuthController {
     res.status(201).json({ code: 201, status: 'created', user });
   });
 
-  // Task 4
+
   login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -25,7 +24,7 @@ class AuthController {
     res.status(200).json({ code: 200, status: 'success', user });
   });
 
-  // Task 6
+  
   logout = asyncHandler(async (req, res) => {
     const { id } = req.user;
     await AuthService.logout(id);

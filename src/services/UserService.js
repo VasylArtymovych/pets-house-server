@@ -10,6 +10,7 @@ class UserService {
     return user;
   };
 
+
   updateUserData = async (id, data) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!user) {
@@ -18,13 +19,13 @@ class UserService {
     return user;
   };
 
+
   addUserPet = async (owner, data) => {
     const { name, dateOfBirth, breed } = data;
-
     const pet = await PetModel.findOne({ name, dateOfBirth, breed });
 
     if (pet) {
-      throw new CustomError('Pet already exists in DB.');
+      throw new CustomError(`Pet already exist.`, 400, 'Please check your posts.');
     }
 
     const newPet = await PetModel.create({ ...data, owner });
@@ -37,6 +38,7 @@ class UserService {
     return newPet;
   };
 
+
   deleteUserPet = async (id) => {
     const deletedPet = await PetModel.findByIdAndRemove(id);
     if (!deletedPet) {
@@ -48,10 +50,20 @@ class UserService {
     return true;
   };
 
-  addPetToFavorites = async (userId, petId) => {
-    const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: petId } });
+  
+  updatePetData = async (id, data) => {
+    const pet = await PetModel.findByIdAndUpdate(id, { ...data }, { new: true });
+    if (!pet) {
+      throw new CustomError('Unable to update Pet data.');
+    }
+    return pet;
+  };
+
+
+  addNoticeToFavorites = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $push: { favorites: noticeId } });
     if (!user) {
-      throw new CustomError('Unable to add pet to favorites.');
+      throw new CustomError('Unable to add notice to favorites.');
     }
 
     return true;
@@ -62,13 +74,34 @@ class UserService {
     if (!user) {
       throw new CustomError('Unable to get favorites.');
     }
+
     return user.favorites;
   };
 
-  deletePetFromFavorites = async (userId, petId) => {
-    const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: petId } });
+  deleteNoticeFromFavorites = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $pull: { favorites: noticeId } });
     if (!user) {
-      throw new CustomError('Unable to add pet to favorites.');
+      throw new CustomError('Unable to delete notice from favorites.');
+    }
+
+    return true;
+  };
+
+
+  getUserNotices = async (id) => {
+    const user = await UserModel.findById(id).populate('notices');
+    if (!user) {
+      throw new CustomError('Unable to get notices.');
+    }
+
+    return user.notices;
+  };
+
+
+  deleteUserNotice = async (userId, noticeId) => {
+    const user = await UserModel.updateOne({ _id: userId }, { $pull: { notices: noticeId } });
+    if (!user) {
+      throw new CustomError('Unable to delete notice.');
     }
 
     return true;
