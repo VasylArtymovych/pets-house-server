@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { UserCtrl } = require('../controllers');
-const { validateBody, validateToken, isValidId } = require('../middleware');
+const { validateBody, validateToken, isValidId, uploadFiles } = require('../middleware');
 const { userSchema, petSchema } = require('../schema');
 
 const router = Router();
@@ -9,7 +9,9 @@ router.get('/current', validateToken, UserCtrl.getUserData);
 
 router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updateUserData);
 
-router.post('/pets', validateToken, validateBody(petSchema), UserCtrl.addUserPet);
+router.patch('/current/avatar', validateToken, uploadFiles.single('avatar'), UserCtrl.updateAvatar);
+
+router.post('/pets', validateToken, validateBody(petSchema), uploadFiles.single('petImage'), UserCtrl.addUserPet);
 
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 

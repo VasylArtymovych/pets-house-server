@@ -1,10 +1,8 @@
 const { NoticeModel, UserModel } = require('../models');
 const { CustomError } = require('../helpers');
 
-
 class NoticeService {
-
-  addNoticeToCategory = async (owner, data) => {
+  addNoticeToCategory = async (owner, data, petImage) => {
     const { title, name, dateOfBirth, breed } = data;
     const notice = await NoticeModel.findOne({ title, name, dateOfBirth, breed });
 
@@ -12,7 +10,7 @@ class NoticeService {
       throw new CustomError(`Notice already exist.`, 400, 'Please check your posts.');
     }
 
-    const newNotice = await NoticeModel.create({ ...data, owner });
+    const newNotice = await NoticeModel.create({ ...data, owner, petImage });
     if (!newNotice) {
       throw new CustomError('Unable to create new Notice data.');
     }
@@ -21,7 +19,6 @@ class NoticeService {
 
     return newNotice;
   };
-
 
   getNoticesByCategory = async (category, skip, limit) => {
     const data = await NoticeModel.find({ category }, { createdAt: 0, updatedAt: 0 }, { skip, limit });
@@ -33,7 +30,6 @@ class NoticeService {
     return data;
   };
 
-
   getNoticeById = async (id) => {
     const notice = await NoticeModel.findById(id, { createdAt: 0, updatedAt: 0 });
 
@@ -43,7 +39,6 @@ class NoticeService {
 
     return notice;
   };
-
 }
 
 module.exports = new NoticeService();

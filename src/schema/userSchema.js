@@ -10,7 +10,8 @@ const userSchema = Joi.object({
   password: Joi.string().pattern(/^\S+$/).min(7).max(32),
   city: Joi.string(),
   phone: Joi.string().pattern(/^\+380\d{9}$/),
-  birthday: Joi.string().pattern(birthdayRegExp)
+  birthday: Joi.string().pattern(birthdayRegExp),
+  avatar: Joi.string()
 });
 
 module.exports = userSchema;

@@ -1,22 +1,27 @@
 const asyncHandler = require('express-async-handler');
+const path = require('path');
+const fs = require('fs/promises');
 const { NoticeService } = require('../services');
 
+const noticeImagesDir = path.join(__dirname, '..', 'public', 'noticeImages');
 
 class NoticeController {
+  constructor(noticeImagesDir) {
+    this.noticeImagesDir = noticeImagesDir;
+  }
 
   addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
     const { title, sex, location } = req.body;
-
+    console.log('body', req.body);
     if (!title || !sex || !location) {
-      return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field' });
+      return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
     }
-
-    const notice = await NoticeService.addNoticeToCategory(owner, req.body);
+    const noticeImageUrl = await this.addPetImage(filename, tempDir);
+    const notice = await NoticeService.addNoticeToCategory(owner, req.body, noticeImageUrl);
 
     res.status(201).json({ code: 201, status: 'created', notice });
   });
-
 
   getNoticesByCategory = asyncHandler(async (req, res) => {
     const { categoryName } = req.params;
@@ -30,13 +35,24 @@ class NoticeController {
     res.status(200).json({ code: 200, status: 'success', data, page, limit });
   });
 
-
   getNoticeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const notice = await NoticeService.getNoticeById(id);
     res.status(200).json({ code: 200, status: 'success', notice });
   });
 
+  addNoticeImage = async (filename, tempDir) => {
+    try {
+      const noticeImage = path.join(this.noticeImagesDir, filename);
+      await fs.rename(tempDir, noticeImage);
+
+      const noticeImageUrl = path.join('petImages', filename);
+      return noticeImageUrl;
+    } catch (error) {
+      await fs.unlink(tempDir);
+      throw new CustomError('Unable to update pet image.', 500, `${error.message}`);
+    }
+  };
 }
 
-module.exports = new NoticeController();
+module.exports = new NoticeController(noticeImagesDir);

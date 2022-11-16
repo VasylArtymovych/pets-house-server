@@ -1,4 +1,5 @@
 const { model, Schema } = require('mongoose');
+const gravatar = require('gravatar');
 
 const phoneRegexp = /^\+380\d{9}$/;
 const birthdayRegexp =
@@ -31,6 +32,12 @@ const userSchema = new Schema(
       type: String,
       match: birthdayRegexp
     },
+    avatar: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, { s: 250 }, true);
+      }
+    },
     token: {
       type: String,
       default: null
@@ -39,7 +46,8 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'pet'
-      }],
+      }
+    ],
     notices: [
       {
         type: Schema.Types.ObjectId,
@@ -53,6 +61,7 @@ const userSchema = new Schema(
       }
     ]
   },
+
   {
     versionKey: false,
     timestamps: true

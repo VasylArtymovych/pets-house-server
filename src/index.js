@@ -33,10 +33,10 @@ const StartServer = () => {
     next();
   });
 
+  app.use(cors({ origin: '*' }));
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(cors({ origin: '*' }));
-  // app.use(express.static('src/public'));
+  app.use(express.static('src/public'));
 
   /** Rules of our API */
   app.use((req, res, next) => {
@@ -57,7 +57,6 @@ const StartServer = () => {
   app.use('/api/notice', NoticeRouter);
   app.use('/api/news', NewsRouter);
   app.use('/api/sponsor', SponsorRouter);
-
 
   app.use(handlers.unknownRoute);
   app.use(handlers.error);

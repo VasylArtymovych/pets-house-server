@@ -35,6 +35,9 @@ const NoticeSchema = new Schema(
       type: String,
       enum: ['lost', 'found', 'inGoodHands', 'sell']
     },
+    petImage: {
+      type: String
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',

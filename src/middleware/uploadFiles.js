@@ -10,7 +10,7 @@ const multerConfig = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    cb(null, shortId() + '' + file.originalname);
+    cb(null, shortId() + '_' + file.originalname);
   }
 });
 

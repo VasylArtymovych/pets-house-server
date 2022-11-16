@@ -1,8 +1,18 @@
 const asyncHandler = require('express-async-handler');
+const path = require('path');
+const fs = require('fs/promises');
 const { UserService } = require('../services');
+const { CustomError } = require('../helpers');
 
+const avatarsDir = path.join(__dirname, '..', 'public', 'avatars');
+const petImagesDir = path.join(__dirname, '..', 'public', 'petImages');
 
 class UserController {
+  constructor(avatarsDir, petImagesDir, noticeImagesDir) {
+    this.avatarsDir = avatarsDir;
+    this.petImagesDir = petImagesDir;
+    this.noticeImagesDir = noticeImagesDir;
+  }
 
   getUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
@@ -10,7 +20,6 @@ class UserController {
 
     res.status(200).json({ code: 200, status: 'success', user });
   });
-
 
   updateUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
@@ -25,20 +34,38 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', user });
   });
 
+  updateAvatar = asyncHandler(async (req, res) => {
+    const { filename, path: tempDir } = req.file;
+    const { id } = req.user;
+    try {
+      const resultUpload = path.join(this.avatarsDir, filename);
+      await fs.rename(tempDir, resultUpload);
+
+      const avatarUrl = path.join('avatars', filename);
+      const user = await UserService.updateAvatar(id, avatarUrl);
+
+      res.status(200).json({ code: 200, status: 'success', user });
+    } catch (error) {
+      await fs.unlink(tempDir);
+      throw new CustomError('Unable to update avatar', 500, `${error.message}`);
+    }
+  });
 
   addUserPet = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
     const { name, dateOfBirth, breed, comments } = req.body;
+    const { filename, path: tempDir } = req.file;
 
     if (!name || !dateOfBirth || !breed || !comments) {
       return res.status(400).json({ error: 'Missing required field', status: 'failed' });
     }
 
-    const pet = await UserService.addUserPet(owner, req.body);
+    const petImageUrl = await this.addPetImage(filename, tempDir);
+
+    const pet = await UserService.addUserPet(owner, req.body, petImageUrl);
 
     res.status(200).json({ code: 200, status: 'success', pet });
   });
-
 
   deleteUserPet = asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -46,7 +73,6 @@ class UserController {
 
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was deleted' });
   });
-
 
   updateUserPetData = asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -58,7 +84,6 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', pet });
   });
 
-
   addNoticeToFavorites = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
     const { id: userId } = req.user;
@@ -67,14 +92,12 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was added to Favorite.' });
   });
 
-
   getUserFavorites = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const favorites = await UserService.getUserFavorites(id);
 
     res.status(200).json({ code: 200, status: 'success', favorites });
   });
-
 
   deleteNoticeFromFavorites = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
@@ -84,14 +107,12 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted from Favorite.' });
   });
 
-
   getUserNotices = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const notices = await UserService.getUserNotices(id);
 
     res.status(200).json({ code: 200, status: 'success', notices });
   });
-
 
   deleteUserNotice = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
@@ -101,6 +122,18 @@ class UserController {
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted.' });
   });
 
+  addPetImage = async (filename, tempDir) => {
+    try {
+      const petImage = path.join(this.petImagesDir, filename);
+      await fs.rename(tempDir, petImage);
+
+      const petImageUrl = path.join('petImages', filename);
+      return petImageUrl;
+    } catch (error) {
+      await fs.unlink(tempDir);
+      throw new CustomError('Unable to update pet image.', 500, `${error.message}`);
+    }
+  };
 }
 
-module.exports = new UserController();
+module.exports = new UserController(avatarsDir, petImagesDir);
