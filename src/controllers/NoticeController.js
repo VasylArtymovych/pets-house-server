@@ -13,11 +13,12 @@ class NoticeController {
   addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
     const { title, sex, location } = req.body;
-    console.log('body', req.body);
+    const { filename, path: tempDir } = req.file;
+
     if (!title || !sex || !location) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
     }
-    const noticeImageUrl = await this.addPetImage(filename, tempDir);
+    const noticeImageUrl = await this.addNoticeImage(filename, tempDir);
     const notice = await NoticeService.addNoticeToCategory(owner, req.body, noticeImageUrl);
 
     res.status(201).json({ code: 201, status: 'created', notice });
@@ -46,7 +47,7 @@ class NoticeController {
       const noticeImage = path.join(this.noticeImagesDir, filename);
       await fs.rename(tempDir, noticeImage);
 
-      const noticeImageUrl = path.join('petImages', filename);
+      const noticeImageUrl = path.join('noticeImages', filename);
       return noticeImageUrl;
     } catch (error) {
       await fs.unlink(tempDir);
