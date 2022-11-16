@@ -23,16 +23,14 @@ const petSchema = new Schema(
       type: String,
       required: [true, 'DB: Comments is required.']
     },
-    petImage: {            
-      type: String,
-      default: ''
-      // required: [true, 'DB: Pet image is required.']
+    petImage: {
+      type: String
     },
     owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required: true,     
-  }  
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true
+    }
   },
   {
     versionKey: false,
