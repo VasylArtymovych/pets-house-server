@@ -4,9 +4,7 @@ const { config } = require('../config');
 const { UserModel } = require('../models');
 const { CustomError } = require('../helpers');
 
-
 class AuthService {
-
   register = async (body) => {
     const user = await UserModel.findOne({ email: body.email });
     if (user) {
@@ -31,7 +29,6 @@ class AuthService {
     return newUser;
   };
 
-
   login = async (email, password) => {
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -55,7 +52,6 @@ class AuthService {
     return user;
   };
 
-
   logout = async (id) => {
     const user = await UserModel.findById(id);
     if (!user) {
@@ -72,6 +68,12 @@ class AuthService {
     return true;
   };
 
+  fogotPassword = async (email, password) => {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      throw new CustomError(`Unable to find user.`, 400, 'Please try again.');
+    }
+  };
 
   validateToken = async (id, token) => {
     const user = await UserModel.findById(id);
@@ -81,12 +83,10 @@ class AuthService {
     return false;
   };
 
-
   generateToken = (id) => {
     const payload = { id };
     return Jwt.sign(payload, config.token.secret, { expiresIn: '8h' });
   };
-
 }
 
 module.exports = new AuthService();

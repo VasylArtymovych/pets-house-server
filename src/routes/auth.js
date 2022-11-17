@@ -11,4 +11,6 @@ router.post('/login', validateBody(userSchema), AuthCtrl.login);
 
 router.get('/logout', validateToken, AuthCtrl.logout);
 
+router.patch('/fogotPassword', validateBody(userSchema), AuthCtrl.fogotPassword);
+
 module.exports = router;

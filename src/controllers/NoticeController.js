@@ -12,10 +12,10 @@ class NoticeController {
 
   addNoticeToCategory = asyncHandler(async (req, res) => {
     const { id: owner } = req.user;
-    const { title, sex, location } = req.body;
+    const { title, sex, location, category } = req.body;
     const { filename, path: tempDir } = req.file;
 
-    if (!title || !sex || !location) {
+    if (!title || !sex || !location || !category) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
     }
     const noticeImageUrl = await this.addNoticeImage(filename, tempDir);

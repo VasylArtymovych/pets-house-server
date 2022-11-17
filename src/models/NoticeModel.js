@@ -33,7 +33,8 @@ const NoticeSchema = new Schema(
     },
     category: {
       type: String,
-      enum: ['lost', 'found', 'inGoodHands', 'sell']
+      enum: ['lost-found', 'inGoodHands', 'sell'],
+      required: [true, 'DB: Category is required.']
     },
     petImage: {
       type: String
