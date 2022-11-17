@@ -11,8 +11,8 @@ class UserService {
     return user;
   };
 
-  updateUserData = async (id, avatarUrl) => {
-    const user = await UserModel.findByIdAndUpdate(id, { avatar: avatarUrl }, { new: true });
+  updateUserData = async (id, body) => {
+    const user = await UserModel.findByIdAndUpdate(id, { ...body }, { new: true });
     if (!user) {
       throw new CustomError('Unable to update User avatar.');
     }
