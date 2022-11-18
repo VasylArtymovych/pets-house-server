@@ -14,7 +14,7 @@ class UserService {
   updateUserData = async (id, body) => {
     const user = await UserModel.findByIdAndUpdate(id, { ...body }, { new: true });
     if (!user) {
-      throw new CustomError('Unable to update User avatar.');
+      throw new CustomError('Unable to update User data.');
     }
     return user;
   };
@@ -22,7 +22,7 @@ class UserService {
   updateAvatar = async (id, avatarUrl) => {
     const user = await UserModel.findByIdAndUpdate(id, { avatar: avatarUrl }, { projection: { avatar: 1, name: 1 }, new: true });
     if (!user) {
-      throw new CustomError('Unable to update User data.');
+      throw new CustomError('Unable to update User avatar.');
     }
     return user;
   };
