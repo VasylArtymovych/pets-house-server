@@ -11,4 +11,6 @@ router.get('/category/:categoryName', NoticeCtrl.getNoticesByCategory);
 
 router.get('/:id', isValidId, NoticeCtrl.getNoticeById);
 
+router.get('/search/:name', NoticeCtrl.searchByNameInTitle);
+
 module.exports = router;

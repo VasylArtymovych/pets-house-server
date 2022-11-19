@@ -68,12 +68,12 @@ class AuthService {
     return true;
   };
 
-  fogotPassword = async (email, password) => {
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      throw new CustomError(`Unable to find user.`, 400, 'Please try again.');
-    }
-  };
+  // fogotPassword = async (email, password) => {
+  //   const user = await UserModel.findOne({ email });
+  //   if (!user) {
+  //     throw new CustomError(`Unable to find user.`, 400, 'Please try again.');
+  //   }
+  // };
 
   validateToken = async (id, token) => {
     const user = await UserModel.findById(id);

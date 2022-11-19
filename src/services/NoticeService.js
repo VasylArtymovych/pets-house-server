@@ -39,6 +39,16 @@ class NoticeService {
 
     return notice;
   };
+
+  searchByNameInTitle = async (name) => {
+    const notices = await NoticeModel.find({ $text: { $search: name } });
+
+    if (!notices) {
+      throw new CustomError(`Notices with title ${searchName} not found.`, 400, 'Check ypur title name.');
+    }
+
+    return notices;
+  };
 }
 
 module.exports = new NoticeService();

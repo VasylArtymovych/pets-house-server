@@ -25,8 +25,7 @@ const NoticeSchema = new Schema(
       required: [true, 'DB: Location is required.']
     },
     price: {
-      type: String,
-      required: [true, 'DB: Price is required.']
+      type: String
     },
     comments: {
       type: String

@@ -42,6 +42,12 @@ class NoticeController {
     res.status(200).json({ code: 200, status: 'success', notice });
   });
 
+  searchByNameInTitle = asyncHandler(async (req, res) => {
+    const { name } = req.params;
+    const notices = await NoticeService.searchByNameInTitle(name);
+    res.status(200).json({ code: 200, status: 'success', notices });
+  });
+
   addNoticeImage = async (filename, tempDir) => {
     try {
       const noticeImage = path.join(this.noticeImagesDir, filename);

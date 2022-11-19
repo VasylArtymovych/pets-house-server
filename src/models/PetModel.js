@@ -1,10 +1,6 @@
 // животные, которые привязываются к конкретному пользователю
 const { model, Schema } = require('mongoose');
 
-// const phoneRegexp=
-// const petSex = ["Male", "Female"];
-// const careView = ["lost", "found"];
-
 const petSchema = new Schema(
   {
     name: {
