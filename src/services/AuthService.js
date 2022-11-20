@@ -3,6 +3,7 @@ const Jwt = require('jsonwebtoken');
 const { config } = require('../config');
 const { UserModel } = require('../models');
 const { CustomError } = require('../helpers');
+const MailService = require('./MailService');
 
 class AuthService {
   register = async (body) => {
@@ -11,7 +12,7 @@ class AuthService {
       throw new CustomError(`User with email: ${body.email} already exist.`, 400, 'Please login.');
     }
 
-    const hashPassword = bcrypt.hashSync(body.password, 10);
+    const hashPassword = this.hashPassword(body.password);
     if (!hashPassword) {
       throw new CustomError('Unable to hash password.');
     }
@@ -68,19 +69,26 @@ class AuthService {
     return true;
   };
 
-  // fogotPassword = async (email, password) => {
-  //   const user = await UserModel.findOne({ email });
-  //   if (!user) {
-  //     throw new CustomError(`Unable to find user.`, 400, 'Please try again.');
-  //   }
-  // };
-
-  validateToken = async (id, token) => {
-    const user = await UserModel.findById(id);
-    if (user && user.token === token) {
-      return true;
+  fogotPassword = async (email) => {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      throw new CustomError(`Unable to find user with email: ${email}.`, 400, 'Please check the name of your email.');
     }
-    return false;
+    await MailService.sendChangePasswordMail(email, user._id);
+  };
+
+  recoverPassword = async (id, password) => {
+    const hashPassword = this.hashPassword(password);
+
+    const user = await UserModel.findByIdAndUpdate(id, { password: hashPassword });
+    if (!user) {
+      throw new CustomError(`Unable to update user details.`, 400, 'Try again later');
+    }
+  };
+
+  hashPassword = (password) => {
+    const hashPassword = bcrypt.hashSync(password, 10);
+    return hashPassword;
   };
 
   generateToken = (id) => {

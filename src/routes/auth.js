@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { AuthCtrl } = require('../controllers');
 const { validateBody, validateToken } = require('../middleware');
-const { userSchema } = require('../schema');
+const { userSchema, recoverPasswordSchema } = require('../schema');
 
 const router = Router();
 
@@ -11,6 +11,8 @@ router.post('/login', validateBody(userSchema), AuthCtrl.login);
 
 router.get('/logout', validateToken, AuthCtrl.logout);
 
-// router.patch('/fogotPassword', validateBody(userSchema), AuthCtrl.fogotPassword);
+router.patch('/forgotPassword', validateBody(userSchema), AuthCtrl.fogotPassword);
+
+router.patch('/recoverPassword', validateBody(recoverPasswordSchema), AuthCtrl.recoverPassword);
 
 module.exports = router;

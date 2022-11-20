@@ -44,7 +44,7 @@ class NoticeService {
     const notices = await NoticeModel.find({ $text: { $search: name } });
 
     if (!notices) {
-      throw new CustomError(`Notices with title ${searchName} not found.`, 400, 'Check ypur title name.');
+      throw new CustomError(`Notices with title ${searchName} not found.`, 400, 'Check your title name.');
     }
 
     return notices;

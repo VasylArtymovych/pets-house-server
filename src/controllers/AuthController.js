@@ -30,15 +30,25 @@ class AuthController {
     res.status(200).json({ code: 200, status: 'success', message: 'Logout success.' });
   });
 
-  // fogotPassword = asyncHandler(async (req, res) => {
-  //   const { email, password } = req.body;
-  //   if (!email || !password) {
-  //     return res.status(400).json({ code: 400, status: 'failed', error: 'Email and password are required.' });
-  //   }
-  //   await AuthService.fogotPassword(email, password);
+  fogotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ code: 400, status: 'failed', error: 'Email is required.' });
+    }
+    await AuthService.fogotPassword(email);
 
-  //   res.status(200).json({ code: 200, status: 'success', message: 'Password has been changed.' });
-  // });
+    res.status(200).json({ code: 200, status: 'success', message: 'Recovery link sent to your email.' });
+  });
+
+  recoverPassword = asyncHandler(async (req, res) => {
+    const { id, password } = req.body;
+    if (!id || !password) {
+      return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
+    }
+    await AuthService.recoverPassword(id, password);
+
+    res.status(200).json({ code: 200, status: 'success', message: 'Password has changed.' });
+  });
 }
 
 module.exports = new AuthController();

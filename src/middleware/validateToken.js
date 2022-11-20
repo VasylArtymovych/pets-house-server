@@ -1,6 +1,6 @@
 const { verify } = require('jsonwebtoken');
 const { CustomError } = require('../helpers');
-const { AuthService } = require('../services');
+const { ValidateTokenService } = require('../services');
 
 module.exports = async (req, res, next) => {
   try {
@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedData = verify(token, process.env.JWT_SECRET_KEY);
 
-    const isValidToken = await AuthService.validateToken(decodedData.id, token);
+    const isValidToken = await ValidateTokenService.validateToken(decodedData.id, token);
     if (!isValidToken) {
       throw new CustomError('Invalid token.', 400, 'Provide valid token');
     }
