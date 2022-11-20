@@ -31,7 +31,8 @@ class AuthService {
   };
 
   login = async (email, password) => {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).populate('pets');
+
     if (!user) {
       throw new CustomError(`User with email: ${email} not found.`, 400, 'Please provide valid email.');
     }
