@@ -33,10 +33,7 @@ const userSchema = new Schema(
       match: birthdayRegexp
     },
     avatar: {
-      type: String,
-      default: function () {
-        return gravatar.url(this.email, { s: 250 }, true);
-      }
+      type: String
     },
     token: {
       type: String,
