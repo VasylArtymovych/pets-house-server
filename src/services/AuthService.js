@@ -94,7 +94,7 @@ class AuthService {
 
   generateToken = (id) => {
     const payload = { id };
-    return Jwt.sign(payload, config.token.secret, { expiresIn: '8h' });
+    return Jwt.sign(payload, config.token.secret, { expiresIn: '12h' });
   };
 }
 
