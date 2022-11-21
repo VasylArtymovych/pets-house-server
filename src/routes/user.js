@@ -15,7 +15,9 @@ router.post('/pets', validateToken, uploadFiles.single('petImage'), validateBody
 
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
-router.patch('/pets/:id', validateToken, isValidId, uploadFiles.single('petImage'), UserCtrl.updateUserPetData);
+router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updateUserPetData);
+router.patch('/pets/petImage', validateToken, uploadFiles.single('petImage'), UserCtrl.updateUserPetImage);
+router.get('/pets', validateToken, UserCtrl.getUserPets);
 
 router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addNoticeToFavorites);
 

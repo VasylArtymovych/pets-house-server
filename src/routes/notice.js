@@ -5,7 +5,7 @@ const { petSchema } = require('../schema');
 
 const router = Router();
 
-router.post('/add', validateToken, validateBody(petSchema), uploadFiles.single('petImage'), NoticeCtrl.addNoticeToCategory);
+router.post('/add', validateToken, uploadFiles.single('petImage'), validateBody(petSchema), NoticeCtrl.addNoticeToCategory);
 
 router.get('/category/:categoryName', NoticeCtrl.getNoticesByCategory);
 

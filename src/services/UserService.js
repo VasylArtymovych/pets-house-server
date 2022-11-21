@@ -56,12 +56,28 @@ class UserService {
     return true;
   };
 
-  updateUserPetData = async (id, petImgUrl, data) => {
-    const pet = await PetModel.findByIdAndUpdate(id, { ...data, petImage: petImgUrl }, { new: true });
+  updateUserPetData = async (id, data) => {
+    const pet = await PetModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!pet) {
       throw new CustomError('Unable to update Pet data.');
     }
     return pet;
+  };
+
+  updateUserPetImage = async (id, petImage) => {
+    const pet = await PetModel.findByIdAndUpdate(id, { petImage }, { new: true });
+    if (!pet) {
+      throw new CustomError('Unable to update Pet image.');
+    }
+    return pet;
+  };
+
+  getUserPets = async (id) => {
+    const user = await UserModel.findById(id).populate('pets');
+    if (!user) {
+      throw new CustomError('Unable to get user pets from DB.');
+    }
+    return user.pets;
   };
 
   addNoticeToFavorites = async (userId, noticeId) => {
