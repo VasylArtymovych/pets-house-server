@@ -11,11 +11,11 @@ router.patch('/current', validateToken, validateBody(userSchema), UserCtrl.updat
 
 router.patch('/current/avatar', validateToken, uploadFiles.single('avatar'), UserCtrl.updateAvatar);
 
-router.post('/pets', validateToken, validateBody(petSchema), uploadFiles.single('petImage'), UserCtrl.addUserPet);
+router.post('/pets', validateToken, uploadFiles.single('petImage'), validateBody(petSchema), UserCtrl.addUserPet);
 
 router.delete('/pets/:id', validateToken, isValidId, UserCtrl.deleteUserPet);
 
-router.patch('/pets/:id', validateToken, isValidId, validateBody(petSchema), UserCtrl.updateUserPetData);
+router.patch('/pets/:id', validateToken, isValidId, uploadFiles.single('petImage'), UserCtrl.updateUserPetData);
 
 router.post('/favorites/:id', validateToken, isValidId, UserCtrl.addNoticeToFavorites);
 

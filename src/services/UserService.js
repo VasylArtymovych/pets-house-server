@@ -56,8 +56,8 @@ class UserService {
     return true;
   };
 
-  updateUserPetData = async (id, data) => {
-    const pet = await PetModel.findByIdAndUpdate(id, { ...data }, { new: true });
+  updateUserPetData = async (id, petImgUrl, data) => {
+    const pet = await PetModel.findByIdAndUpdate(id, { ...data, petImage: petImgUrl }, { new: true });
     if (!pet) {
       throw new CustomError('Unable to update Pet data.');
     }

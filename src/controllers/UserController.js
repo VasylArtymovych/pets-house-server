@@ -75,7 +75,22 @@ class UserController {
   });
 
   updateUserPetData = asyncHandler(async (req, res) => {
+    const { filename, path: tempDir } = req.file;
     const { id } = req.params;
+    // const {} = req.body
+    try {
+      const resultUpload = path.join(this.petImagesDir, filename);
+      await fs.rename(tempDir, resultUpload);
+
+      const petImgUrl = path.join('petImages', filename);
+      const user = await UserService.updateUserPetData(id, petImgUrl, req.body);
+
+      res.status(200).json({ code: 200, status: 'success', user });
+    } catch (error) {
+      await fs.unlink(tempDir);
+      throw new CustomError('Unable to update avatar', 500, `${error.message}`);
+    }
+
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ code: 400, status: 'failed', message: 'Provide data to update.' });
     }

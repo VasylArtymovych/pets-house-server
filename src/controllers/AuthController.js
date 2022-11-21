@@ -30,12 +30,12 @@ class AuthController {
     res.status(200).json({ code: 200, status: 'success', message: 'Logout success.' });
   });
 
-  fogotPassword = asyncHandler(async (req, res) => {
+  forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ code: 400, status: 'failed', error: 'Email is required.' });
     }
-    await AuthService.fogotPassword(email);
+    await AuthService.forgotPassword(email);
 
     res.status(200).json({ code: 200, status: 'success', message: 'Recovery link sent to your email.' });
   });

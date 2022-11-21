@@ -70,7 +70,7 @@ class AuthService {
     return true;
   };
 
-  fogotPassword = async (email) => {
+  forgotPassword = async (email) => {
     const user = await UserModel.findOne({ email });
     if (!user) {
       throw new CustomError(`Unable to find user with email: ${email}.`, 400, 'Please check the name of your email.');
