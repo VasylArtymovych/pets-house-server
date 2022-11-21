@@ -8,12 +8,12 @@ const petSchema = Joi.object({
     .min(2)
     .max(48),
   name: Joi.string()
-    .pattern(/^[a-zA-Z]+$/)
+    .pattern(/^[a-zA-Z\s]+$/)
     .min(2)
     .max(16),
   dateOfBirth: Joi.string().pattern(dateOfBirthRegExp),
   breed: Joi.string()
-    .pattern(/^[a-zA-Z]+$/)
+    .pattern(/^[a-zA-Z\s]+$/)
     .min(2)
     .max(24),
   sex: Joi.string().valid('male', 'female'),
