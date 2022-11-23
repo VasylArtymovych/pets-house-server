@@ -87,8 +87,7 @@ class UserController {
   updateUserPetImage = asyncHandler(async (req, res) => {
     const { filename, path: tempDir } = req.file;
     const { id } = req.params;
-    console.log("req.file", req.file);
-    console.log("tempDir", tempDir);    
+
     try {
       const resultUpload = path.join(this.petImagesDir, filename);
       await fs.rename(tempDir, resultUpload);
@@ -99,7 +98,7 @@ class UserController {
       res.status(200).json({ code: 200, status: 'success', pet });
     } catch (error) {
       await fs.unlink(tempDir);
-      throw new CustomError('Unable to update pet image', 500, `${error.message}`);
+      throw new CustomError('Unable to update petImage', 500, `${error.message}`);
     }
   });
 
