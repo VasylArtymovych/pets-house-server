@@ -52,7 +52,7 @@ class UserController {
   });
 
   addUserPet = asyncHandler(async (req, res) => {
-    const { id: owner } = req.user;
+    const owner = req.user;
     const { name, dateOfBirth, breed, comments } = req.body;
     const { filename, path: tempDir } = req.file;
 

@@ -39,7 +39,7 @@ const NoticeSchema = new Schema(
       type: String
     },
     owner: {
-      type: Schema.Types.ObjectId,
+      type: Object,
       ref: 'user',
       required: true
     }

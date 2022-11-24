@@ -11,7 +11,7 @@ class NoticeController {
   }
 
   addNoticeToCategory = asyncHandler(async (req, res) => {
-    const { id: owner } = req.user;
+    const owner = req.user;
     const { title, sex, location, category } = req.body;
     const { filename, path: tempDir } = req.file;
 

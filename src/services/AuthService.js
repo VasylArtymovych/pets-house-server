@@ -3,6 +3,7 @@ const Jwt = require('jsonwebtoken');
 const { config } = require('../config');
 const { UserModel } = require('../models');
 const { CustomError } = require('../helpers');
+const { UserDto } = require('../dtos');
 const MailService = require('./MailService');
 
 class AuthService {
@@ -22,7 +23,9 @@ class AuthService {
       throw new CustomError('Unable to save User to DB.');
     }
 
-    const token = this.generateToken(newUser._id);
+    const userDto = new UserDto(newUser); // id, email, phone
+    const token = this.generateToken({ ...userDto });
+
     newUser.token = token;
     await newUser.save();
 
@@ -42,7 +45,9 @@ class AuthService {
       throw new CustomError('Invalid password', 400, 'Please provide valid password.');
     }
 
-    const token = this.generateToken(user._id);
+    const userDto = new UserDto(user); // id, email, phone
+    const token = this.generateToken({ ...userDto });
+
     user.token = token;
     await user.save();
 
@@ -92,9 +97,8 @@ class AuthService {
     return hashPassword;
   };
 
-  generateToken = (id) => {
-    const payload = { id };
-    return Jwt.sign(payload, config.token.secret, { expiresIn: '12h' });
+  generateToken = (payload) => {
+    return Jwt.sign(payload, config.token.secret, { expiresIn: '24h' });
   };
 }
 

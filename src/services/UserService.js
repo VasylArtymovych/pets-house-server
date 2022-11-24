@@ -40,7 +40,7 @@ class UserService {
       throw new CustomError('Unable to create new Pet data.');
     }
 
-    await UserModel.updateOne({ _id: owner }, { $push: { pets: newPet._id } });
+    await UserModel.updateOne({ _id: owner.id }, { $push: { pets: newPet._id } });
 
     return newPet;
   };
@@ -51,7 +51,7 @@ class UserService {
       throw new CustomError('Unable to delete Pet.');
     }
 
-    await UserModel.updateOne({ _id: deletedPet.owner }, { $pull: { pets: { $in: [deletedPet._id] } } });
+    await UserModel.updateOne({ _id: deletedPet.owner.id }, { $pull: { pets: { $in: [deletedPet._id] } } });
 
     return true;
   };

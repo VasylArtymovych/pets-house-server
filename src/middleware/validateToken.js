@@ -21,7 +21,6 @@ module.exports = async (req, res, next) => {
     }
 
     req.user = decodedData;
-
     next();
   } catch (error) {
     if (error instanceof CustomError) {

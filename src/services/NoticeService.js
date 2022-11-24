@@ -15,8 +15,7 @@ class NoticeService {
       throw new CustomError('Unable to create new Notice data.');
     }
 
-    await UserModel.updateOne({ _id: owner }, { $push: { notices: newNotice._id } });
-
+    await UserModel.updateOne({ _id: owner.id }, { $push: { notices: newNotice._id } });
     return newNotice;
   };
 
