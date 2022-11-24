@@ -16,6 +16,7 @@ class NoticeController {
     const { filename, path: tempDir } = req.file;
 
     if (!title || !sex || !location || !category) {
+      await fs.unlink(tempDir);
       return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
     }
     const noticeImageUrl = await this.addNoticeImage(filename, tempDir);
