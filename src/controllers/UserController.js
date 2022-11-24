@@ -87,6 +87,7 @@ class UserController {
   updateUserPetImage = asyncHandler(async (req, res) => {
     const { filename, path: tempDir } = req.file;
     const { id } = req.params;
+
     try {
       const resultUpload = path.join(this.petImagesDir, filename);
       await fs.rename(tempDir, resultUpload);
