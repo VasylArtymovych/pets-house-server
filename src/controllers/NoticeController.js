@@ -27,14 +27,14 @@ class NoticeController {
 
   getNoticesByCategory = asyncHandler(async (req, res) => {
     const { categoryName } = req.params;
-    let { page = 1, limit = 10 } = req.query;
+    let { search, page = 1, limit = 10 } = req.query;
 
     const skip = (parseInt(page) - 1) * limit;
     limit = parseInt(limit) > 20 ? 20 : limit;
 
-    const data = await NoticeService.getNoticesByCategory(categoryName, skip, limit);
+    const data = await NoticeService.getNoticesByCategory(categoryName, search, skip, limit);
 
-    res.status(200).json({ code: 200, status: 'success', data, page, limit });
+    res.status(200).json({ code: 200, status: 'success', data, page, limit, total: data.length });
   });
 
   getNoticeById = asyncHandler(async (req, res) => {

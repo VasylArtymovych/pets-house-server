@@ -19,7 +19,21 @@ class NoticeService {
     return newNotice;
   };
 
-  getNoticesByCategory = async (category, skip, limit) => {
+  getNoticesByCategory = async (category, search, skip, limit) => {
+    if (search) {
+      const data = await NoticeModel.find(
+        { category, $text: { $search: search, $caseSensitive: false } },
+        { createdAt: 0, updatedAt: 0 },
+        { skip, limit }
+      );
+
+      if (!data) {
+        throw new CustomError('Unable to get data from DB.');
+      }
+
+      return data;
+    }
+
     const data = await NoticeModel.find({ category }, { createdAt: 0, updatedAt: 0 }, { skip, limit });
 
     if (!data) {
