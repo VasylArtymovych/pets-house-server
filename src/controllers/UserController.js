@@ -4,14 +4,15 @@ const fs = require('fs/promises');
 const { UserService } = require('../services');
 const { CustomError } = require('../helpers');
 
+const publicDir = path.join(__dirname, '..', 'public');
 const avatarsDir = path.join(__dirname, '..', 'public', 'avatars');
 const petImagesDir = path.join(__dirname, '..', 'public', 'petImages');
 
 class UserController {
-  constructor(avatarsDir, petImagesDir, noticeImagesDir) {
+  constructor(avatarsDir, petImagesDir, publicDir) {
     this.avatarsDir = avatarsDir;
     this.petImagesDir = petImagesDir;
-    this.noticeImagesDir = noticeImagesDir;
+    this.publicDir = publicDir;
   }
 
   getUserData = asyncHandler(async (req, res) => {
@@ -44,6 +45,16 @@ class UserController {
       const avatarUrl = path.join('avatars', filename);
       const user = await UserService.updateAvatar(id, avatarUrl);
 
+      if (user.avatar !== '') {
+        const prevAvatar = path.join(this.publicDir, user.avatar);
+        try {
+          await fs.unlink(prevAvatar);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      user.avatar = avatarUrl;
       res.status(200).json({ code: 200, status: 'success', user });
     } catch (error) {
       await fs.unlink(tempDir);
@@ -95,6 +106,14 @@ class UserController {
       const petImgUrl = path.join('petImages', filename);
       const pet = await UserService.updateUserPetImage(id, petImgUrl);
 
+      const prevPetImg = path.join(publicDir, pet.petImage);
+      try {
+        await fs.unlink(prevPetImg);
+      } catch (error) {
+        console.log(error);
+      }
+
+      pet.petImage = petImgUrl;
       res.status(200).json({ code: 200, status: 'success', pet });
     } catch (error) {
       await fs.unlink(tempDir);
@@ -161,4 +180,4 @@ class UserController {
   };
 }
 
-module.exports = new UserController(avatarsDir, petImagesDir);
+module.exports = new UserController(avatarsDir, petImagesDir, publicDir);

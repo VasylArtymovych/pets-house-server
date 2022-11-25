@@ -20,7 +20,7 @@ class UserService {
   };
 
   updateAvatar = async (id, avatarUrl) => {
-    const user = await UserModel.findByIdAndUpdate(id, { avatar: avatarUrl }, { projection: { avatar: 1, name: 1 }, new: true });
+    const user = await UserModel.findByIdAndUpdate(id, { avatar: avatarUrl }, { projection: { avatar: 1, name: 1 } });
     if (!user) {
       throw new CustomError('Unable to update User avatar.');
     }
@@ -65,7 +65,7 @@ class UserService {
   };
 
   updateUserPetImage = async (id, petImgUrl) => {
-    const pet = await PetModel.findByIdAndUpdate(id, { petImage: petImgUrl }, { new: true });
+    const pet = await PetModel.findByIdAndUpdate(id, { petImage: petImgUrl });
     if (!pet) {
       throw new CustomError('Unable to update Pet image.');
     }
