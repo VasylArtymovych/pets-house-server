@@ -72,7 +72,6 @@ class UserController {
     }
 
     const petImageUrl = await this.addPetImage(filename, tempDir);
-
     const pet = await UserService.addUserPet(owner, req.body, petImageUrl);
 
     res.status(200).json({ code: 200, status: 'success', pet });
@@ -80,7 +79,12 @@ class UserController {
 
   deleteUserPet = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    await UserService.deleteUserPet(id);
+    const deletedPet = await UserService.deleteUserPet(id);
+
+    const deletedPetImage = path.join(this.publicDir, deletedPet.petImage);
+    try {
+      await fs.unlink(deletedPetImage);
+    } catch (error) {}
 
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was deleted' });
   });
@@ -161,7 +165,12 @@ class UserController {
   deleteUserNotice = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
     const { id: userId } = req.user;
-    await UserService.deleteUserNotice(userId, noticeId);
+    const deletedNotice = await UserService.deleteUserNotice(userId, noticeId);
+
+    const deletedNoticeImg = path.join(this.publicDir, deletedNotice.petImage);
+    try {
+      await fs.unlink(deletedNoticeImg);
+    } catch (error) {}
 
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted.' });
   });

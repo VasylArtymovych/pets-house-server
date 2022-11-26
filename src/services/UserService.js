@@ -53,7 +53,7 @@ class UserService {
 
     await UserModel.updateOne({ _id: deletedPet.owner.id }, { $pull: { pets: { $in: [deletedPet._id] } } });
 
-    return true;
+    return deletedPet;
   };
 
   updateUserPetData = async (id, data) => {
@@ -127,7 +127,7 @@ class UserService {
       throw new CustomError('Unable to delete Notice from user notices.');
     }
 
-    return true;
+    return deletedNotice;
   };
 }
 
