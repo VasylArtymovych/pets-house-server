@@ -2,27 +2,33 @@ const asyncHandler = require('express-async-handler');
 const path = require('path');
 const fs = require('fs/promises');
 const { NoticeService } = require('../services');
-
-const noticeImagesDir = path.join(__dirname, '..', 'public', 'noticeImages');
+const { CustomError } = require('../helpers');
+const { config } = require('../config');
 
 class NoticeController {
-  constructor(noticeImagesDir) {
-    this.noticeImagesDir = noticeImagesDir;
-  }
-
   addNoticeToCategory = asyncHandler(async (req, res) => {
+    if (!req.file) {
+      throw new CustomError('Missing required fields.', 400, 'Provide necessary data.');
+    }
+    const { path } = req.file;
     const owner = req.user;
     const { title, sex, location, category } = req.body;
-    const { filename, path: tempDir } = req.file;
 
     if (!title || !sex || !location || !category) {
-      await fs.unlink(tempDir);
-      return res.status(400).json({ code: 400, status: 'failed', error: 'Missing required field.' });
+      await fs.unlink(path);
+      throw new CustomError('Missing required fields.', 400, 'Provide necessary data.');
     }
-    const noticeImageUrl = await this.addNoticeImage(filename, tempDir);
-    const notice = await NoticeService.addNoticeToCategory(owner, req.body, noticeImageUrl);
+    try {
+      const upload = await config.cloudUploads(path, 'noticeImages');
+      const noticeImageUrl = upload.url;
+      const notice = await NoticeService.addNoticeToCategory(owner, req.body, noticeImageUrl);
+      await fs.unlink(path);
 
-    res.status(201).json({ code: 201, status: 'created', notice });
+      res.status(201).json({ code: 201, status: 'created', notice });
+    } catch (error) {
+      await fs.unlink(path);
+      throw new CustomError('Unable to update avatar', 500, `${error.message}`);
+    }
   });
 
   getNoticesByCategory = asyncHandler(async (req, res) => {
@@ -48,19 +54,6 @@ class NoticeController {
     const notices = await NoticeService.searchByNameInTitle(name);
     res.status(200).json({ code: 200, status: 'success', notices });
   });
-
-  addNoticeImage = async (filename, tempDir) => {
-    try {
-      const noticeImage = path.join(this.noticeImagesDir, filename);
-      await fs.rename(tempDir, noticeImage);
-
-      const noticeImageUrl = path.join('noticeImages', filename);
-      return noticeImageUrl;
-    } catch (error) {
-      await fs.unlink(tempDir);
-      throw new CustomError('Unable to update pet image.', 500, `${error.message}`);
-    }
-  };
 }
 
-module.exports = new NoticeController(noticeImagesDir);
+module.exports = new NoticeController();

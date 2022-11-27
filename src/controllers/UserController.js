@@ -3,18 +3,9 @@ const path = require('path');
 const fs = require('fs/promises');
 const { UserService } = require('../services');
 const { CustomError } = require('../helpers');
-
-const publicDir = path.join(__dirname, '..', 'public');
-const avatarsDir = path.join(__dirname, '..', 'public', 'avatars');
-const petImagesDir = path.join(__dirname, '..', 'public', 'petImages');
+const { config } = require('../config');
 
 class UserController {
-  constructor(avatarsDir, petImagesDir, publicDir) {
-    this.avatarsDir = avatarsDir;
-    this.petImagesDir = petImagesDir;
-    this.publicDir = publicDir;
-  }
-
   getUserData = asyncHandler(async (req, res) => {
     const { id } = req.user;
     const user = await UserService.getUserData(id);
@@ -36,55 +27,53 @@ class UserController {
   });
 
   updateAvatar = asyncHandler(async (req, res) => {
-    const { filename, path: tempDir } = req.file;
+    if (!req.file) {
+      throw new CustomError('File is required.', 400, 'Upload file.');
+    }
+    const { path } = req.file;
     const { id } = req.user;
+
     try {
-      const resultUpload = path.join(this.avatarsDir, filename);
-      await fs.rename(tempDir, resultUpload);
-
-      const avatarUrl = path.join('avatars', filename);
+      const upload = await config.cloudUploads(path, 'avatars');
+      const avatarUrl = upload.url;
       const user = await UserService.updateAvatar(id, avatarUrl);
+      await fs.unlink(path);
 
-      if (user.avatar !== '') {
-        const prevAvatar = path.join(this.publicDir, user.avatar);
-        try {
-          await fs.unlink(prevAvatar);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-
-      user.avatar = avatarUrl;
       res.status(200).json({ code: 200, status: 'success', user });
     } catch (error) {
-      await fs.unlink(tempDir);
+      await fs.unlink(path);
       throw new CustomError('Unable to update avatar', 500, `${error.message}`);
     }
   });
 
   addUserPet = asyncHandler(async (req, res) => {
+    if (!req.file) {
+      throw new CustomError('Missing required fields.', 400, 'Provide necessary data.');
+    }
+    const { path } = req.file;
     const owner = req.user;
     const { name, dateOfBirth, breed, comments } = req.body;
-    const { filename, path: tempDir } = req.file;
 
     if (!name || !dateOfBirth || !breed || !comments) {
-      return res.status(400).json({ error: 'Missing required field', status: 'failed' });
+      await fs.unlink(path);
+      throw new CustomError('Missing required fields.', 400, 'Provide necessary data.');
     }
+    try {
+      const upload = await config.cloudUploads(path, 'petImages');
+      const petImageUrl = upload.url;
+      const pet = await UserService.addUserPet(owner, req.body, petImageUrl);
+      await fs.unlink(path);
 
-    const petImageUrl = await this.addPetImage(filename, tempDir);
-    const pet = await UserService.addUserPet(owner, req.body, petImageUrl);
-
-    res.status(200).json({ code: 200, status: 'success', pet });
+      res.status(201).json({ code: 201, status: 'success', pet });
+    } catch (error) {
+      await fs.unlink(path);
+      throw new CustomError('Unable to update avatar', 500, `${error.message}`);
+    }
   });
 
   deleteUserPet = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const deletedPet = await UserService.deleteUserPet(id);
-
-    const deletedPetImage = path.join(this.publicDir, deletedPet.petImage);
-    try {
-      await fs.unlink(deletedPetImage);
-    } catch (error) {}
+    await UserService.deleteUserPet(id);
 
     res.status(200).json({ code: 200, status: 'success', message: 'Pet was deleted' });
   });
@@ -100,28 +89,21 @@ class UserController {
   });
 
   updateUserPetImage = asyncHandler(async (req, res) => {
-    const { filename, path: tempDir } = req.file;
+    if (!req.file) {
+      throw new CustomError('File is required.', 400, 'Upload file.');
+    }
+    const { path } = req.file;
     const { id } = req.params;
-
     try {
-      const resultUpload = path.join(this.petImagesDir, filename);
-      await fs.rename(tempDir, resultUpload);
+      const upload = await config.cloudUploads(path, 'petImages');
+      const petImageUrl = upload.url;
+      const pet = await UserService.updateUserPetImage(id, petImageUrl);
+      await fs.unlink(path);
 
-      const petImgUrl = path.join('petImages', filename);
-      const pet = await UserService.updateUserPetImage(id, petImgUrl);
-
-      const prevPetImg = path.join(publicDir, pet.petImage);
-      try {
-        await fs.unlink(prevPetImg);
-      } catch (error) {
-        console.log(error);
-      }
-
-      pet.petImage = petImgUrl;
       res.status(200).json({ code: 200, status: 'success', pet });
     } catch (error) {
-      await fs.unlink(tempDir);
-      throw new CustomError('Unable to update petImage', 500, `${error.message}`);
+      await fs.unlink(path);
+      throw new CustomError('Unable to update pet image.', 500, `${error.message}`);
     }
   });
 
@@ -174,19 +156,6 @@ class UserController {
 
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted.' });
   });
-
-  addPetImage = async (filename, tempDir) => {
-    try {
-      const petImage = path.join(this.petImagesDir, filename);
-      await fs.rename(tempDir, petImage);
-
-      const petImageUrl = path.join('petImages', filename);
-      return petImageUrl;
-    } catch (error) {
-      await fs.unlink(tempDir);
-      throw new CustomError('Unable to update pet image.', 500, `${error.message}`);
-    }
-  };
 }
 
-module.exports = new UserController(avatarsDir, petImagesDir, publicDir);
+module.exports = new UserController();

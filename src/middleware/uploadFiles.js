@@ -1,6 +1,5 @@
 const multer = require('multer');
 const path = require('path');
-const shortId = require('shortid');
 
 const tempDir = path.join(__dirname, '..', 'temp');
 
@@ -10,7 +9,7 @@ const multerConfig = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    cb(null, shortId() + '_' + file.originalname);
+    cb(null, new Date().toISOString() + '_' + file.originalname);
   }
 });
 
