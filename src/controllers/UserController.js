@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler');
-const path = require('path');
 const fs = require('fs/promises');
 const { UserService } = require('../services');
 const { CustomError } = require('../helpers');
