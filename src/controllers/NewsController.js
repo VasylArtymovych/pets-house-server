@@ -1,16 +1,11 @@
-const asyncHandler = require('express-async-handler');
 const { NewsService } = require('../services');
 
-
 class NewsController {
-  
-  getAllNews = async (_, res) => {
+  getAllNews = async (req, res) => {
     const result = await NewsService.getAllNews();
 
-    res.status(200).json(result);       
-  }
-
+    res.status(200).json(result);
+  };
 }
 
-
-module.exports = new NewsController(asyncHandler);
+module.exports = new NewsController();

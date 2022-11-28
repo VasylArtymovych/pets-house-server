@@ -4,9 +4,7 @@ const path = require('path');
 
 const newPath = path.resolve('src/models/news.json');
 
-
 class NewsService {
-  
   getAllNews = async () => {
     const data = await fs.readFile(newPath);
     if (!data) {
@@ -16,11 +14,9 @@ class NewsService {
     if (!result) {
       throw new CustomError('Unable to parse data');
     }
-    
-    return result;
-  }
-  
-}
 
+    return result;
+  };
+}
 
 module.exports = new NewsService();
