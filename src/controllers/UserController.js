@@ -146,12 +146,7 @@ class UserController {
   deleteUserNotice = asyncHandler(async (req, res) => {
     const { id: noticeId } = req.params;
     const { id: userId } = req.user;
-    const deletedNotice = await UserService.deleteUserNotice(userId, noticeId);
-
-    const deletedNoticeImg = path.join(this.publicDir, deletedNotice.petImage);
-    try {
-      await fs.unlink(deletedNoticeImg);
-    } catch (error) {}
+    await UserService.deleteUserNotice(userId, noticeId);
 
     res.status(200).json({ code: 200, status: 'success', message: 'Notice was deleted.' });
   });
